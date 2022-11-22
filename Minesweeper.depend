@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1669124889 source:e:\hcmus\project\minesweeper\main.cpp
+1669126951 source:e:\hcmus\project\minesweeper\main.cpp
 	<SFML/Graphics.hpp>
 	<bits/stdc++.h>
 	"Game/Game.h"
@@ -413,11 +413,20 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1669125361 source:e:\hcmus\project\minesweeper\game\game.cpp
+1669130137 source:e:\hcmus\project\minesweeper\game\game.cpp
 	<bits/stdc++.h>
 	<random>
 	<ctime>
 	"Game.h"
 
-1669125240 e:\hcmus\project\minesweeper\game\game.h
+1669130784 e:\hcmus\project\minesweeper\game\game.h
+	<bits/stdc++.h>
+
+1669130161 source:e:\hcmus\project\minesweeper\object\object.cpp
+	<bits/stdc++.h>
+	"Object.h"
+
+1669130733 e:\hcmus\project\minesweeper\object\object.h
+	<bits/stdc++.h>
+	<SFML/Graphics.hpp>
 

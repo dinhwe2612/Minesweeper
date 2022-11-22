@@ -1,3 +1,7 @@
+#pragma once
+#include <bits/stdc++.h>
+using namespace std;
+
 struct Game {
     vector<vector<int>> cntBoom;
     vector<vector<bool>> haveBoom;
