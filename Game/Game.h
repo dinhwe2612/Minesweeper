@@ -1,28 +1,34 @@
 #pragma once
+#include "../Cell/Cell.h"
+#include "../InputBar/InpuBar.h"
 #include <bits/stdc++.h>
+#include <SFML/Graphics.hpp>
 using namespace std;
+using namespace sf;
 
-struct Game {
-    vector<vector<int>> cntBoom;
-    vector<vector<bool>> haveBoom;
-    vector<vector<bool>> visited;
-    int Boom, Nrow, Ncol;
-    bool LOSE;
+class Game {
+private:
+    vector<vector<Cell>> cell;
     int dx[8] = {-1, 0, 1, 1, 1, 0, -1, -1};
     int dy[8] = {-1, -1, -1, 0, 1, 1, 1, 0};
-    Game(int _Nrow, int _Ncol) {
-        Nrow = _Nrow;
-        Ncol = _Ncol;
-        Boom = 2;
-        LOSE = false;
-        cntBoom.resize(Nrow + 2, vector<int>(Ncol + 2, 0));
-        haveBoom.resize(Nrow + 2, vector<bool>(Ncol + 2, false));
-        visited.resize(Nrow + 2, vector<bool>(Ncol + 2, false));
-    }
     //012
     //7.3
     //654
-    void updateBoom(int x, int y);
-    void CreateBoard();
-    void bfs0(int x, int y);
+    int Nrow, Ncol, numOfMines, sqrtNumOfCells;
+    bool isMineExploded, isGamePaused;
+
+    void CreateCells();
+    void SetCells();
+    void CountSurroundedMines(int x, int y);
+    void SetImage(int x, int y);
+    void ResetCells();
+    void SetGameWindowParameters(int n);
+    void StartGameWindow(Window &window, Text start, InputBar cellGrid, InputBar NumberOfMines);
+public:
+    Game() {
+        isMineExploded = false;
+        isGamePaused = false;
+    }
+    void CreateGameWindow();
+    void CreateSettingsWindow();
 };
