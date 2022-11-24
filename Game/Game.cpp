@@ -6,33 +6,44 @@
 void Game::CreateCells() {
     cell.resize(numOfCells);
     init.resize(numOfCells);
-    int curNumOfMines = 0;
-    for(int i = 1; i <= curNumOfMines; ++i) {
-        int id = rand() % numOfCells;
+    vector<int> SetOfId;
+    for(int id = 0; id < numOfCells; ++id) SetOfId.push_back(id);
+    mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+    shuffle(SetOfId.begin(), SetOfId.end(), rng);
+    cout << "Mines: ";
+    for(int i = 0; i < numOfMines; ++i) {
+        int id = SetOfId[i];
         cell[id].isMine = true;
+        cout << id << ' ';
     }
+    cout << '\n';
     for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
-            cell[id].SetPosition(i * cell[id].sz + sqrtNumOfCells * 0.5f, j * cell[id].sz + sqrtNumOfCells * 5.7f);
-            init[id].SetPosition(i * init[id].sz + sqrtNumOfCells * 0.5f, j * init[id].sz + sqrtNumOfCells * 5.7f);
+        SetImage(id);
 
-            ++i;
-            if (i == sqrtNumOfCells) {
-                i = 0;
-                ++j;
-            }
+        cell[id].SetPosition(i * cell[id].sz + sqrtNumOfCells * 0.5f, j * cell[id].sz + sqrtNumOfCells * 5.7f);
+        init[id].SetPosition(i * init[id].sz + sqrtNumOfCells * 0.5f, j * init[id].sz + sqrtNumOfCells * 5.7f);
+
+        if (++i == sqrtNumOfCells) {
+            i = 0;
+            ++j;
         }
-//    for(int i = 1; i <= Nrow; ++i) {
-//        for(int j = 1; j <= Ncol; ++j) {
-//            SetImage(i, j);
-//        }
-//    }
+    }
+}
+pair<int, int> Game::toCoord(int id) {
+    return {id/Nrow, id % Ncol};
+}
+int Game::toId(int x, int y) {
+    return x * Nrow + y;
 }
 int Game::CountSurroundedMines(int id) {
     int cnt = 0;
-//    for(int i = 0; i < 8; ++i) {
-//        int u = x + dx[i], v = y + dy[i];
-//        cnt += cell[u][v].isMine;
-//    }
+    int x, y; tie(x, y) = toCoord(id);
+    for(int i = 0; i < 8; ++i) {
+        int u = x + dx[i], v = y + dy[i];
+        if (u < 0 || v < 0 || u >= Nrow || v >= Ncol) continue;
+        int near_id = toId(u, v);
+        cnt += cell[near_id].isMine;
+    }
     return cnt;
 }
 void Game::SetImage(int id) {
@@ -90,8 +101,8 @@ void Game::SetGameWindowParameters(int n)
 		Nrow = sqrtNumOfCells, Ncol = sqrtNumOfCells;
 	}
 
-	x = sqrtNumOfCells * 31.f;
-	y = sqrtNumOfCells * 36.7f;
+	max_x = sqrtNumOfCells * 31.f;
+	max_y = sqrtNumOfCells * 36.7f;
 
 	if (numOfMines >= numOfCells) {
 		numOfMines  = numOfCells - 1;
@@ -99,6 +110,7 @@ void Game::SetGameWindowParameters(int n)
 	else if (numOfMines <= 0) {
 		numOfMines = 1;
 	}
+	cout << max_x << ' ' << max_y << ' ' << sqrtNumOfCells << ' ' << numOfCells << ' ' << numOfMines << '\n';
 }
 void Game::StartGameWindow(Window& window, Text start, InputBar cellGrid, InputBar NumberOfMines) {
     Vector2i mousePosition = Mouse::getPosition(window);
@@ -119,9 +131,9 @@ void Game::StartGameWindow(Window& window, Text start, InputBar cellGrid, InputB
 //    cout << cellGrid.GetInput() << ' ' << numOfMines << '\n';
 }
 void Game::CreateGameWindow() {
-    RenderWindow window(VideoMode(1000, 1000), "Minesweeper", Style::Titlebar | Style::Close);
+    RenderWindow window(VideoMode(max_x, max_y), "Minesweeper", Style::Titlebar | Style::Close);
     Event event;
-    Field field(x, y);
+    Field field(max_x, max_y);
 
     Font font;
 	Text win;
@@ -130,7 +142,7 @@ void Game::CreateGameWindow() {
 	win.setFillColor(Color::Green);
 	win.setString("You Win!");
 	win.setCharacterSize(40);
-	win.setPosition(x / 2 - 100, y / 2);
+	win.setPosition(max_x / 2 - 100, max_y / 2);
 
 	Text lose;
 	font.loadFromFile("Fonts\\arial.ttf");
@@ -138,7 +150,7 @@ void Game::CreateGameWindow() {
 	lose.setFillColor(Color::Red);
 	lose.setString("You Lose!");
 	lose.setCharacterSize(40);
-	lose.setPosition(x / 2 - 100, y / 2);
+	lose.setPosition(max_x / 2 - 100, max_y / 2);
 
     CreateCells();
     vector<Cell> cell1(numOfCells);
@@ -156,7 +168,7 @@ void Game::CreateGameWindow() {
         window.clear();
         window.draw(field.GetRectangleShape());
         for(int id = 0; id < numOfCells; ++id) {
-            window.draw(init[id].GetRectangleShape());
+            window.draw(cell[id].GetRectangleShape());
         }
 
         window.display();

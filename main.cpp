@@ -5,7 +5,6 @@ using namespace sf;
 int main()
 {
 
-    srand(time(NULL));
     Game gg;
     gg.CreateSettingsWindow();
 

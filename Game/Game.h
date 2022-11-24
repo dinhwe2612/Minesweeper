@@ -17,9 +17,11 @@ private:
     //654
     int Nrow, Ncol, numOfCells, numOfMines, sqrtNumOfCells;
     bool isMineExploded, isGamePaused;
-    float x, y;
+    float max_x, max_y;
 
     void CreateCells();
+    pair<int, int> toCoord(int id);
+    int toId(int x, int y);
     int CountSurroundedMines(int id);
     void SetImage(int id);
 

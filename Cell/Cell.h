@@ -11,7 +11,7 @@ private:
     int sz, idX, idY;
     bool isMine, isEmpty, isAbleToOpen;
     void SetIndex(int x, int y);
-    void SetPosition(float x, float y);
+    void SetPosition(int x, int y);
 public:
     Cell() {
         sz = 30;
