@@ -14,14 +14,14 @@ private:
     //012
     //7.3
     //654
-    int Nrow, Ncol, numOfMines, sqrtNumOfCells;
+    int Nrow, Ncol, numOfCells, numOfMines, sqrtNumOfCells;
     bool isMineExploded, isGamePaused;
+    float x, y;
 
     void CreateCells();
-    void SetCells();
-    void CountSurroundedMines(int x, int y);
+    int CountSurroundedMines(int x, int y);
     void SetImage(int x, int y);
-    void ResetCells();
+
     void SetGameWindowParameters(int n);
     void StartGameWindow(Window &window, Text start, InputBar cellGrid, InputBar NumberOfMines);
 public:

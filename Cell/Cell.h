@@ -9,8 +9,7 @@ private:
     RectangleShape shape;
 	Texture texture;
     int sz, idX, idY;
-    bool isMine, isNumber, isEmpty, isAbleToOpen;
-
+    bool isMine, isEmpty, isAbleToOpen;
     void SetIndex(int x, int y);
     void SetPosition(int x, int y);
 public:
@@ -20,7 +19,6 @@ public:
         shape.setSize(Vector2f(sz, sz));
         shape.setTexture(&texture);
         isMine = false;
-        isNumber = false;
         isEmpty = false;
         isAbleToOpen = false;
     }
@@ -31,4 +29,5 @@ public:
 	bool IsEmpty();
 	bool IsAbleToOpen();
 	bool IsMine();
+	friend class Game;
 };

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1669201521 source:e:\hcmus\project\minesweeper\main.cpp
+1669218568 source:e:\hcmus\project\minesweeper\main.cpp
 	"Game/Game.h"
 
 1525812018 c:\users\msi 203vn\.vscode\sfml-2.5.1\include\sfml\graphics.hpp
@@ -411,12 +411,12 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1669204056 source:e:\hcmus\project\minesweeper\game\game.cpp
+1669220116 source:e:\hcmus\project\minesweeper\game\game.cpp
 	"Game.h"
 	<random>
 	<ctime>
 
-1669205270 e:\hcmus\project\minesweeper\game\game.h
+1669216111 e:\hcmus\project\minesweeper\game\game.h
 	"../Cell/Cell.h"
 	"../InputBar/InpuBar.h"
 	<bits/stdc++.h>
@@ -429,14 +429,17 @@
 	<bits/stdc++.h>
 	<SFML/Graphics.hpp>
 
-1669203778 e:\hcmus\project\minesweeper\cell\cell.h
+1669215232 e:\hcmus\project\minesweeper\cell\cell.h
 	<bits/stdc++.h>
 	<SFML/Graphics.hpp>
 
 1669204016 source:e:\hcmus\project\minesweeper\cell\cell.cpp
 	"Cell.h"
 
-1669205414 e:\hcmus\project\minesweeper\inputbar\inpubar.h
+1669219716 e:\hcmus\project\minesweeper\inputbar\inpubar.h
 	<bits/stdc++.h>
 	<SFML/Graphics.hpp>
+
+1669206405 source:e:\hcmus\project\minesweeper\inputbar\inputbar.cpp
+	"InpuBar.h"
 

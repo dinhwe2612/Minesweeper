@@ -5,11 +5,9 @@ using namespace sf;
 int main()
 {
 
-    Window window;
-    while(window.isOpen()) {
-        window.display();
-    }
-
+    srand(time(NULL));
+    Game gg;
+    gg.CreateSettingsWindow();
 
     return 0;
 }

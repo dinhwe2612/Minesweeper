@@ -5,7 +5,7 @@ using namespace std;
 using namespace sf;
 
 class InputBar {
-private:
+public:
     String startingInput, input, addedNumber;
     Text inputText;
     Font font;
