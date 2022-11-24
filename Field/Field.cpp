@@ -1,5 +1,5 @@
 #include "Field.h"
 
-void Field::GetRectangleShape {
-
+RectangleShape& Field::GetRectangleShape() {
+    return shape;
 }

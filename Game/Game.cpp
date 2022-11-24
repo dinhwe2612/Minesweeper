@@ -1,62 +1,73 @@
 #include "Game.h"
+#include "../Field/Field.h"
 #include <random>
 #include <ctime>
 
 void Game::CreateCells() {
-    cell.resize(Nrow + 2, vector<Cell>(Ncol + 2));
+    cell.resize(numOfCells);
+    init.resize(numOfCells);
     int curNumOfMines = 0;
-    for(int i = 1; i <= Nrow; ++i) {
-        for(int j = 1; j <= Ncol; ++j) {
-            bool BOOM = min(rand() % 2, numOfMines - curNumOfMines);
-            cell[i][j].isMine = BOOM;
-            curNumOfMines += BOOM;
-            cell[i][j].SetIndex(i, j);
-            cell[i][j].SetPosition((i - 1) * cell[i][j].sz + sqrtNumOfCells * 0.5f, (j - 1) * cell[i][j].sz + sqrtNumOfCells * 5.7f);
-            SetImage(i, j);
+    for(int i = 1; i <= curNumOfMines; ++i) {
+        int id = rand() % numOfCells;
+        cell[id].isMine = true;
+    }
+    for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
+            cell[id].SetPosition(i * cell[id].sz + sqrtNumOfCells * 0.5f, j * cell[id].sz + sqrtNumOfCells * 5.7f);
+            init[id].SetPosition(i * init[id].sz + sqrtNumOfCells * 0.5f, j * init[id].sz + sqrtNumOfCells * 5.7f);
+
+            ++i;
+            if (i == sqrtNumOfCells) {
+                i = 0;
+                ++j;
+            }
         }
-    }
+//    for(int i = 1; i <= Nrow; ++i) {
+//        for(int j = 1; j <= Ncol; ++j) {
+//            SetImage(i, j);
+//        }
+//    }
 }
-int Game::CountSurroundedMines(int x, int y) {
+int Game::CountSurroundedMines(int id) {
     int cnt = 0;
-    for(int i = 0; i < 8; ++i) {
-        int u = x + dx[i], v = y + dy[i];
-        cnt += cell[u][v].isMine;
-    }
+//    for(int i = 0; i < 8; ++i) {
+//        int u = x + dx[i], v = y + dy[i];
+//        cnt += cell[u][v].isMine;
+//    }
     return cnt;
 }
-void Game::SetImage(int x, int y) {
-    if (cell[x][y].IsMine()) {
-        cell[x][y].SetTexture("Images\\Mine.png");
+void Game::SetImage(int id) {
+    if (cell[id].IsMine()) {
+        cell[id].SetTexture("Images\\Mine.png");
         return;
     }
-    switch(CountSurroundedMines(x, y)) {
+    switch(CountSurroundedMines(id)) {
         case 0:
-            cell[x][y].SetTexture("Images\\EmptyCell.png");
-            cell[x][y].isEmpty = true;
+            cell[id].SetTexture("Images\\EmptyCell.png");
+            cell[id].isEmpty = true;
             break;
         case 1:
-            cell[x][y].SetTexture("Images\\One.png");
+            cell[id].SetTexture("Images\\One.png");
             break;
         case 2:
-            cell[x][y].SetTexture("Images\\Two.png");
+            cell[id].SetTexture("Images\\Two.png");
             break;
         case 3:
-            cell[x][y].SetTexture("Images\\Three.png");
+            cell[id].SetTexture("Images\\Three.png");
             break;
         case 4:
-            cell[x][y].SetTexture("Images\\Four.png");
+            cell[id].SetTexture("Images\\Four.png");
             break;
         case 5:
-            cell[x][y].SetTexture("Images\\Five.png");
+            cell[id].SetTexture("Images\\Five.png");
             break;
         case 6:
-            cell[x][y].SetTexture("Images\\Six.png");
+            cell[id].SetTexture("Images\\Six.png");
             break;
         case 7:
-            cell[x][y].SetTexture("Images\\Seven.png");
+            cell[id].SetTexture("Images\\Seven.png");
             break;
         case 8:
-            cell[x][y].SetTexture("Images\\Eighth.png");
+            cell[id].SetTexture("Images\\Eighth.png");
             break;
     }
 }
@@ -66,14 +77,17 @@ void Game::SetGameWindowParameters(int n)
 	if (n < 100) {
 		sqrtNumOfCells = 10;
 		numOfCells = 100;
+		Nrow = sqrtNumOfCells, Ncol = sqrtNumOfCells;
 	}
 	else if (n > 400) {
 		sqrtNumOfCells = 20;
 		numOfCells = 400;
+		Nrow = sqrtNumOfCells, Ncol = sqrtNumOfCells;
 	}
 	else {
 		sqrtNumOfCells = round(sqrt(n));
 		numOfCells = pow(sqrtNumOfCells, 2);
+		Nrow = sqrtNumOfCells, Ncol = sqrtNumOfCells;
 	}
 
 	x = sqrtNumOfCells * 31.f;
@@ -96,37 +110,38 @@ void Game::StartGameWindow(Window& window, Text start, InputBar cellGrid, InputB
                 numOfMines = NumberOfMines.GetInput();
                 SetGameWindowParameters(cellGrid.GetInput());
                 window.close();
-//                CreateGameWindow();
+                CreateGameWindow();
             }
         } else {
             start.setFillColor(Color::White);
         }
     }
+//    cout << cellGrid.GetInput() << ' ' << numOfMines << '\n';
 }
 void Game::CreateGameWindow() {
-    RenderWindow window(VideoMode(x, y), "Minesweeper", Style::Titlebar | Style::Close);
+    RenderWindow window(VideoMode(1000, 1000), "Minesweeper", Style::Titlebar | Style::Close);
     Event event;
     Field field(x, y);
 
-    sf::Font font;
-	sf::Text win;
+    Font font;
+	Text win;
 	font.loadFromFile("Fonts\\arial.ttf");
 	win.setFont(font);
-	win.setFillColor(sf::Color::Green);
+	win.setFillColor(Color::Green);
 	win.setString("You Win!");
 	win.setCharacterSize(40);
 	win.setPosition(x / 2 - 100, y / 2);
 
-	sf::Text lose;
+	Text lose;
 	font.loadFromFile("Fonts\\arial.ttf");
 	lose.setFont(font);
-	lose.setFillColor(sf::Color::Red);
+	lose.setFillColor(Color::Red);
 	lose.setString("You Lose!");
 	lose.setCharacterSize(40);
 	lose.setPosition(x / 2 - 100, y / 2);
 
     CreateCells();
-
+    vector<Cell> cell1(numOfCells);
     while(window.isOpen()) {
         while(window.pollEvent(event)) {
             if (event.type == Event::Closed) {
@@ -134,7 +149,17 @@ void Game::CreateGameWindow() {
                 CreateSettingsWindow();
             }
         }
+        if (isGamePaused == false) {
 
+        }
+
+        window.clear();
+        window.draw(field.GetRectangleShape());
+        for(int id = 0; id < numOfCells; ++id) {
+            window.draw(init[id].GetRectangleShape());
+        }
+
+        window.display();
     }
 }
 void Game::CreateSettingsWindow() {
@@ -161,7 +186,6 @@ void Game::CreateSettingsWindow() {
                 cellGrid.SetInputText(window, event);
                 minesNumber.SetInputText(window, event);
             }
-
         }
         cellGrid.MouseOverInputBox(window);
         minesNumber.MouseOverInputBox(window);

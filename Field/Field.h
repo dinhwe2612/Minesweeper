@@ -5,6 +5,9 @@ using namespace std;
 using namespace sf;
 
 class Field {
+private:
+    RectangleShape shape;
+    Texture texture;
 public:
     Field(float x, float y) {
         texture.loadFromFile("Images\\MinesweeperField.png");

@@ -3,10 +3,10 @@
 void Cell::SetIndex(int x, int y) {
     idX = x, idY = y;
 }
-void Cell::SetPosition(int x, int y) {
+void Cell::SetPosition(float x, float y) {
     shape.setPosition(x, y);
 }
-RectangleShape& Cell::GetRactangleShape() {
+RectangleShape& Cell::GetRectangleShape() {
     return shape;
 }
 pair<int, int> Cell::GetIndex() {

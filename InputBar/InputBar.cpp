@@ -2,7 +2,7 @@
 
 bool InputBar::IsAddedNumberInteger() {
     for(char ch : addedNumber) {
-        if (ch < 'A' || ch > 'Z') {
+        if (!('0' <= ch && ch <= '9')) {
             return false;
         }
     }
@@ -15,6 +15,7 @@ RectangleShape& InputBar::GetInputShape() {
     return inputShape;
 }
 int InputBar::GetInput() {
+    cout << IsAddedNumberInteger() << '\n';
     if (addedNumber.getSize() == 0 || IsAddedNumberInteger() == false) {
         return 1;
     } else {
@@ -41,9 +42,11 @@ void InputBar::SetInputText(Window& window, Event& event) {
 
             if (addedNumber.getSize() > 3) {
                 input = startingInput + event.text.unicode;
-                addedNumber = "";
+                addedNumber = event.text.unicode;
             }
             inputText.setString(input);
+            string s = addedNumber;
+            cout << s << '\n';
         }
     }
 }

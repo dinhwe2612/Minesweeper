@@ -26,7 +26,7 @@ public:
         inputText.setFillColor(Color::Black);
         inputText.setCharacterSize(20);
         inputText.setPosition(coordX, coordY);
-        inputText.setString(input);
+        inputText.setString(startingInput);
         inputText.setFont(font);
     }
     Text& GetInputText();

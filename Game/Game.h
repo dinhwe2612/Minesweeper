@@ -8,7 +8,8 @@ using namespace sf;
 
 class Game {
 private:
-    vector<vector<Cell>> cell;
+    vector<Cell> cell;
+    vector<Cell> init;
     int dx[8] = {-1, 0, 1, 1, 1, 0, -1, -1};
     int dy[8] = {-1, -1, -1, 0, 1, 1, 1, 0};
     //012
@@ -19,8 +20,8 @@ private:
     float x, y;
 
     void CreateCells();
-    int CountSurroundedMines(int x, int y);
-    void SetImage(int x, int y);
+    int CountSurroundedMines(int id);
+    void SetImage(int id);
 
     void SetGameWindowParameters(int n);
     void StartGameWindow(Window &window, Text start, InputBar cellGrid, InputBar NumberOfMines);
