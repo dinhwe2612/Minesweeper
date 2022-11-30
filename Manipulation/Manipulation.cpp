@@ -1,11 +1,23 @@
 #include "Manipulation.h"
 #include <windows.h>
 
-void Manipulation::bfs(RenderWindow& window, int id, vector<Cell>& cell) {
-    window.draw(cell[id].GetRectangleShape());
+pair<int, int> Manipulation::toCoord(int id) {
+    return {id / Nrow, id % Ncol};
+}
+int Manipulation::toId(int x, int y) {
+    return x * Nrow + y;
+}
+void Manipulation::bfs(RenderWindow& window, int id, vector<Cell>& cell, vector<Cell>& cellDraw, int& numCheckedCell) {
+    if (stateOfCells[id] == Checked) return;
+    stateOfCells[id] = Checked;
+    ++numCheckedCell;
+    cout << "LEFT" << '\n';
+    cout << id << '\n';
+    cellDraw[id] = cell[id];
     if (!cell[id].IsEmpty()) return;
     queue<int> q;
     q.push(id);
+
     while(q.size()) {
         int curId = q.front();
         q.pop();
@@ -17,13 +29,16 @@ void Manipulation::bfs(RenderWindow& window, int id, vector<Cell>& cell) {
             if (newX < 0 || newY < 0 || newX >= Nrow || newY >= Ncol) continue;
             if (cell[newId].IsMine() || stateOfCells[newId] == Checked || stateOfCells[newId] == flagPlaced) continue;
 
-            window.draw(cell[newId].GetRectangleShape());
+            cellDraw[newId] = cell[newId];
+            stateOfCells[newId] = Checked;
+            ++numCheckedCell;
+            cout << newId << '\n';
             if (cell[newId].IsEmpty()) q.push(newId);
         }
     }
 }
 
-void Manipulation::LeftClickOnCell(RenderWindow& window, vector<Cell>& cell, bool& isMineExploded) {
+void Manipulation::LeftClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw, bool& isMineExploded, int& numCheckedCell) {
     Vector2i mousePosition = Mouse::getPosition(window);
 
     if (Mouse::isButtonPressed(Mouse::Left)) {
@@ -38,13 +53,13 @@ void Manipulation::LeftClickOnCell(RenderWindow& window, vector<Cell>& cell, boo
             if (cell[id].IsMine()) {
                 isMineExploded = true;
             } else {
-                bfs(window, id, cell);
+                bfs(window, id, cell, cellDraw, numCheckedCell);
             }
             break;
         }
     }
 }
-void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell) {
+void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw) {
     Vector2i mousePosition = Mouse::getPosition(window);
 
     if (Mouse::isButtonPressed(Mouse::Right)) {
@@ -58,12 +73,12 @@ void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell) {
             if (stateOfCells[id] == Checked) continue;
             ++cnt;
             if (stateOfCells[id] == Unchecked) {
-                cell[id].SetTexture("Images\\Flag.png");
+                cellDraw[id].SetTexture("Images\\Flag.png");
                 cout << "Flag" << '\n';
                 stateOfCells[id] = flagPlaced;
             } else {
                 cout << "UnFlag" << '\n';
-                cell[id].SetTexture("Images\\UnCheckedCell.png");
+                cellDraw[id].SetTexture("Images\\UnCheckedCell.png");
                 stateOfCells[id] = Unchecked;
             }
             break;

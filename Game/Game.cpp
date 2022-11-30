@@ -7,20 +7,25 @@
 
 void Game::CreateCells() {
     cell.resize(numOfCells);
+    cellDraw.resize(numOfCells);
     //for random
-    vector<int> SetOfId;
-    for(int id = 0; id < numOfCells; ++id) SetOfId.push_back(id);
+    vector<int> Ids;
+    for(int id = 0; id < numOfCells; ++id) Ids.push_back(id);
     mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-    shuffle(SetOfId.begin(), SetOfId.end(), rng);
+    shuffle(Ids.begin(), Ids.end(), rng);
+    for(int i = 0; i < numOfMines; ++i) IdMineCells.push_back(Ids[i]);
     //
     cout << "Mines: ";
     for(int i = 0; i < numOfMines; ++i) {
-        int id = SetOfId[i];
+        int id = IdMineCells[i];
         cell[id].isMine = true;
         cout << id << ' ';
     }
     cout << '\n';
     for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
+        SetImage(id);
+
+        cellDraw[id].SetPosition(i * cellDraw[id].sz + sqrtNumOfCells * 0.5f, j * cellDraw[id].sz + sqrtNumOfCells * 5.7f);
         cell[id].SetPosition(i * cell[id].sz + sqrtNumOfCells * 0.5f, j * cell[id].sz + sqrtNumOfCells * 5.7f);
 
         if (++i == sqrtNumOfCells) {
@@ -28,9 +33,17 @@ void Game::CreateCells() {
             ++j;
         }
     }
+    for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
+        cout << CountSurroundedMines(id) << ' ';
+
+        if (++i == sqrtNumOfCells) {
+            i = 0;
+            ++j;cout << '\n';
+        }
+    }
 }
 pair<int, int> Game::toCoord(int id) {
-    return {id/Nrow, id % Ncol};
+    return {id / Nrow, id % Ncol};
 }
 int Game::toId(int x, int y) {
     return x * Nrow + y;
@@ -38,15 +51,19 @@ int Game::toId(int x, int y) {
 int Game::CountSurroundedMines(int id) {
     int cnt = 0;
     int x, y; tie(x, y) = toCoord(id);
+
     for(int i = 0; i < 8; ++i) {
         int u = x + dx[i], v = y + dy[i];
-        if (u < 1 || v < 1 || u >= Nrow || v >= Ncol) continue;
+
+        if (u < 0 || v < 0 || u >= Nrow || v >= Ncol) continue;
+
         int near_id = toId(u, v);
         cnt += cell[near_id].isMine;
     }
     return cnt;
 }
 void Game::SetImage(int id) {
+    cellDraw[id].SetTexture("Images\\UnCheckedCell.png");
     if (cell[id].IsMine()) {
         cell[id].SetTexture("Images\\Mine.png");
         return;
@@ -83,8 +100,7 @@ void Game::SetImage(int id) {
     }
 }
 //////////////////////////////////////////////////////////
-void Game::SetGameWindowParameters(int n)
-{
+void Game::SetGameWindowParameters(int n) {
 	if (n < 100) {
 		sqrtNumOfCells = 10;
 		numOfCells = 100;
@@ -112,7 +128,7 @@ void Game::SetGameWindowParameters(int n)
 	}
 	cout << max_x << ' ' << max_y << ' ' << sqrtNumOfCells << ' ' << numOfCells << ' ' << numOfMines << '\n';
 }
-void Game::StartGameWindow(Window& window, Text start, InputBar cellGrid, InputBar NumberOfMines) {
+void Game::StartGameWindow(RenderWindow& window, Text start, InputBar cellGrid, InputBar NumberOfMines) {
     Vector2i mousePosition = Mouse::getPosition(window);
 
     if (mousePosition.x >= start.getPosition().x && mousePosition.x <= 210) {
@@ -131,10 +147,11 @@ void Game::StartGameWindow(Window& window, Text start, InputBar cellGrid, InputB
 //    cout << cellGrid.GetInput() << ' ' << numOfMines << '\n';
 }
 void Game::CreateGameWindow() {
+    Sleep(80);
     RenderWindow window(VideoMode(max_x, max_y), "Minesweeper", Style::Titlebar | Style::Close);
     Event event;
     Field field(max_x, max_y);
-    Manipulation Player(numOfCells);
+    Manipulation Player(numOfCells, Nrow, Ncol);
 
     Font font;
 	Text win;
@@ -143,7 +160,7 @@ void Game::CreateGameWindow() {
 	win.setFillColor(Color::Green);
 	win.setString("You Win!");
 	win.setCharacterSize(40);
-	win.setPosition(max_x / 2 - 100, max_y / 2);
+	win.setPosition(max_x / 2 - 82, max_y / 2 - 30);
 
 	Text lose;
 	font.loadFromFile("Fonts\\arial.ttf");
@@ -151,11 +168,11 @@ void Game::CreateGameWindow() {
 	lose.setFillColor(Color::Red);
 	lose.setString("You Lose!");
 	lose.setCharacterSize(40);
-	lose.setPosition(max_x / 2 - 100, max_y / 2);
+	lose.setPosition(max_x / 2 - 82, max_y / 2 - 30);
 
     CreateCells();
-    vector<Cell> cell1(numOfCells);
 
+    int numCheckedCell = 0;
     while(window.isOpen()) {
         while(window.pollEvent(event)) {
             if (event.type == Event::Closed) {
@@ -164,15 +181,30 @@ void Game::CreateGameWindow() {
             }
         }
         if (isGamePaused == false) {
-//            Player.LeftClickOnCell(window, cell, isMineExploded);
-            Player.RightClickOnCell(window, cell);
+            Player.LeftClickOnCell(window, cell, cellDraw, isMineExploded, numCheckedCell);
+            Player.RightClickOnCell(window, cell, cellDraw);
             Sleep(44);
         }
 
         window.clear();
         window.draw(field.GetRectangleShape());
+
         for(int id = 0; id < numOfCells; ++id) {
-            window.draw(cell[id].GetRectangleShape());
+            window.draw(cellDraw[id].GetRectangleShape());
+        }
+
+        if (isMineExploded == true) {
+            for(int id : IdMineCells) {
+                cellDraw[id].SetTexture("Images\\ExplodedMine.png");
+                window.draw(cellDraw[id].GetRectangleShape());
+            }
+            window.draw(lose);
+            isGamePaused = true;
+        }
+
+        if (numCheckedCell + numOfMines == numOfCells) {
+            window.draw(win);
+            isGamePaused = true;
         }
 
         window.display();

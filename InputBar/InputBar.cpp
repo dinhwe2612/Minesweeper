@@ -37,8 +37,11 @@ void InputBar::SetInputText(Window& window, Event& event) {
     Vector2i mousePosition = Mouse::getPosition(window);
     if (mousePosition.x >= inputShape.getPosition().x && mousePosition.x <= inputShape.getPosition().x + szX) {
         if (mousePosition.y >= inputShape.getPosition().y && mousePosition.y <= inputShape.getPosition().y + szY) {
-            input += event.text.unicode;
-            addedNumber += event.text.unicode;
+            char ch = event.text.unicode;
+            if ('0' <= ch && ch <= '9') {
+                input += event.text.unicode;
+                addedNumber += event.text.unicode;
+            }
 
             if (addedNumber.getSize() > 3) {
                 input = startingInput + event.text.unicode;
