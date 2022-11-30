@@ -9,7 +9,7 @@ private:
     RectangleShape shape;
 	Texture texture;
     int sz, idX, idY;
-    bool isMine, isEmpty, isAbleToOpen;
+    bool isMine, isEmpty, isOpen;
     void SetIndex(int x, int y);
     void SetPosition(int x, int y);
 public:
@@ -20,14 +20,13 @@ public:
         shape.setSize(Vector2f(sz, sz));
         isMine = false;
         isEmpty = false;
-        isAbleToOpen = false;
+        isOpen = false;
     }
     RectangleShape& GetRectangleShape();
     pair<int, int> GetIndex();
-    void SetIsAbleToOpen(bool i);
 	void SetTexture(string path);
 	bool IsEmpty();
-	bool IsAbleToOpen();
+	bool IsOpen();
 	bool IsMine();
 	friend class Game;
 };

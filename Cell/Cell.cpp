@@ -12,17 +12,14 @@ RectangleShape& Cell::GetRectangleShape() {
 pair<int, int> Cell::GetIndex() {
     return {idX, idY};
 }
-void Cell::SetIsAbleToOpen(bool i) {
-    isAbleToOpen = i;
-}
 void Cell::SetTexture(string path) {
     texture.loadFromFile(path);
 }
 bool Cell::IsEmpty() {
     return isEmpty;
 }
-bool Cell::IsAbleToOpen() {
-    return isAbleToOpen;
+bool Cell::IsOpen() {
+    return isOpen;
 }
 bool Cell::IsMine() {
     return isMine;

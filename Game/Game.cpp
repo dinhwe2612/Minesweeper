@@ -1,15 +1,18 @@
 #include "Game.h"
 #include "../Field/Field.h"
+#include "../Manipulation/Manipulation.h"
 #include <random>
 #include <ctime>
+#include <windows.h>
 
 void Game::CreateCells() {
     cell.resize(numOfCells);
-    init.resize(numOfCells);
+    //for random
     vector<int> SetOfId;
     for(int id = 0; id < numOfCells; ++id) SetOfId.push_back(id);
     mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
     shuffle(SetOfId.begin(), SetOfId.end(), rng);
+    //
     cout << "Mines: ";
     for(int i = 0; i < numOfMines; ++i) {
         int id = SetOfId[i];
@@ -18,10 +21,7 @@ void Game::CreateCells() {
     }
     cout << '\n';
     for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
-        SetImage(id);
-
         cell[id].SetPosition(i * cell[id].sz + sqrtNumOfCells * 0.5f, j * cell[id].sz + sqrtNumOfCells * 5.7f);
-        init[id].SetPosition(i * init[id].sz + sqrtNumOfCells * 0.5f, j * init[id].sz + sqrtNumOfCells * 5.7f);
 
         if (++i == sqrtNumOfCells) {
             i = 0;
@@ -40,7 +40,7 @@ int Game::CountSurroundedMines(int id) {
     int x, y; tie(x, y) = toCoord(id);
     for(int i = 0; i < 8; ++i) {
         int u = x + dx[i], v = y + dy[i];
-        if (u < 0 || v < 0 || u >= Nrow || v >= Ncol) continue;
+        if (u < 1 || v < 1 || u >= Nrow || v >= Ncol) continue;
         int near_id = toId(u, v);
         cnt += cell[near_id].isMine;
     }
@@ -134,6 +134,7 @@ void Game::CreateGameWindow() {
     RenderWindow window(VideoMode(max_x, max_y), "Minesweeper", Style::Titlebar | Style::Close);
     Event event;
     Field field(max_x, max_y);
+    Manipulation Player(numOfCells);
 
     Font font;
 	Text win;
@@ -154,6 +155,7 @@ void Game::CreateGameWindow() {
 
     CreateCells();
     vector<Cell> cell1(numOfCells);
+
     while(window.isOpen()) {
         while(window.pollEvent(event)) {
             if (event.type == Event::Closed) {
@@ -162,7 +164,9 @@ void Game::CreateGameWindow() {
             }
         }
         if (isGamePaused == false) {
-
+//            Player.LeftClickOnCell(window, cell, isMineExploded);
+            Player.RightClickOnCell(window, cell);
+            Sleep(44);
         }
 
         window.clear();

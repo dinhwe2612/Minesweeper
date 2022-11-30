@@ -84,10 +84,16 @@
 			<Add library="sfml-system" />
 			<Add directory="C:/Users/MSI 203VN/.vscode/SFML-2.5.1/lib" />
 		</Linker>
+		<Unit filename="Cell/Cell.cpp" />
+		<Unit filename="Cell/Cell.h" />
+		<Unit filename="Field/Field.cpp" />
+		<Unit filename="Field/Field.h" />
 		<Unit filename="Game/Game.cpp" />
 		<Unit filename="Game/Game.h" />
-		<Unit filename="Object/Object.cpp" />
-		<Unit filename="Object/Object.h" />
+		<Unit filename="InputBar/InpuBar.h" />
+		<Unit filename="InputBar/InputBar.cpp" />
+		<Unit filename="Manipulation/Manipulation.cpp" />
+		<Unit filename="Manipulation/Manipulation.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
