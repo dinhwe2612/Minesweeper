@@ -59,7 +59,7 @@ void Manipulation::LeftClickOnCell(RenderWindow& window, vector<Cell>& cell, vec
         }
     }
 }
-void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw) {
+void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw, int& numOfFlags) {
     Vector2i mousePosition = Mouse::getPosition(window);
 
     if (Mouse::isButtonPressed(Mouse::Right)) {
@@ -76,10 +76,12 @@ void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell, ve
                 cellDraw[id].SetTexture("Images\\Flag.png");
                 cout << "Flag" << '\n';
                 stateOfCells[id] = flagPlaced;
+                ++numOfFlags;
             } else {
                 cout << "UnFlag" << '\n';
                 cellDraw[id].SetTexture("Images\\UnCheckedCell.png");
                 stateOfCells[id] = Unchecked;
+                --numOfFlags;
             }
             break;
         }

@@ -21,17 +21,19 @@ private:
     int toId(int x, int y);
     void bfs(RenderWindow& window, int id, vector<Cell>& cell, vector<Cell>& cellDraw, int& numCheckedCell);
 public:
-    Manipulation(int num, int Nr, int Nc) {
-        numOfCells = num;
-        Nrow = Nr;
-        Ncol = Nc;
-        cout << num << endl;
-        stateOfCells.assign(num, 0);//unchecked
+    Manipulation() {
         FlagCell.loadFromFile("Images\\Flag.png");
         UnCheckedCell.loadFromFile("Images\\UnCheckedCell.png");
         MineExplodedCell.loadFromFile("Images\\ExplodedMine.png");
         NotAMineCell.loadFromFile("Images\\NotAMine.png");
     }
+    void init(int num, int Nr, int Nc) {
+        numOfCells = num;
+        Nrow = Nr;
+        Ncol = Nc;
+        cout << num << endl;
+        stateOfCells.assign(num, 0);//unchecked
+    }
     void LeftClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw, bool& isMineExploded, int& numCheckedCell);
-    void RightClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw);
+    void RightClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw, int& numOfFlags);
 };

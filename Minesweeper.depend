@@ -411,10 +411,11 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1669820607 source:e:\hcmus\project\minesweeper\game\game.cpp
+1669898236 source:e:\hcmus\project\minesweeper\game\game.cpp
 	"Game.h"
 	"../Field/Field.h"
 	"../Manipulation/Manipulation.h"
+	"../Stats/Stats.h"
 	<random>
 	<ctime>
 	<windows.h>
@@ -443,7 +444,7 @@
 	<bits/stdc++.h>
 	<SFML/Graphics.hpp>
 
-1669255448 source:e:\hcmus\project\minesweeper\inputbar\inputbar.cpp
+1669821043 source:e:\hcmus\project\minesweeper\inputbar\inputbar.cpp
 	"InpuBar.h"
 
 1669253049 source:e:\hcmus\project\minesweeper\field\field.cpp
@@ -453,12 +454,20 @@
 	<bits/stdc++.h>
 	<SFML/Graphics.hpp>
 
-1669820587 source:e:\hcmus\project\minesweeper\manipulation\manipulation.cpp
+1669896008 source:e:\hcmus\project\minesweeper\manipulation\manipulation.cpp
 	"Manipulation.h"
 	<windows.h>
 
-1669819838 e:\hcmus\project\minesweeper\manipulation\manipulation.h
+1669897811 e:\hcmus\project\minesweeper\manipulation\manipulation.h
 	"../Game/Game.h"
+	<bits/stdc++.h>
+	<SFML/Graphics.hpp>
+
+1669898302 source:e:\hcmus\project\minesweeper\stats\stats.cpp
+	"Stats.h"
+
+1669898324 e:\hcmus\project\minesweeper\stats\stats.h
+	"../Cell/Cell.h"
 	<bits/stdc++.h>
 	<SFML/Graphics.hpp>
 

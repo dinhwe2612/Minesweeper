@@ -1,11 +1,19 @@
 #include "Game.h"
 #include "../Field/Field.h"
 #include "../Manipulation/Manipulation.h"
+#include "../Stats/Stats.h"
 #include <random>
 #include <ctime>
 #include <windows.h>
 
 void Game::CreateCells() {
+    //init
+    isMineExploded = false;
+    isGamePaused = false;
+
+    IdMineCells.clear();
+    cell.clear();
+    cellDraw.clear();
     cell.resize(numOfCells);
     cellDraw.resize(numOfCells);
     //for random
@@ -14,7 +22,6 @@ void Game::CreateCells() {
     mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
     shuffle(Ids.begin(), Ids.end(), rng);
     for(int i = 0; i < numOfMines; ++i) IdMineCells.push_back(Ids[i]);
-    //
     cout << "Mines: ";
     for(int i = 0; i < numOfMines; ++i) {
         int id = IdMineCells[i];
@@ -22,6 +29,7 @@ void Game::CreateCells() {
         cout << id << ' ';
     }
     cout << '\n';
+    //
     for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
         SetImage(id);
 
@@ -151,7 +159,10 @@ void Game::CreateGameWindow() {
     RenderWindow window(VideoMode(max_x, max_y), "Minesweeper", Style::Titlebar | Style::Close);
     Event event;
     Field field(max_x, max_y);
-    Manipulation Player(numOfCells, Nrow, Ncol);
+    Manipulation Player;
+    Player.init(numOfCells, Nrow, Ncol);
+    Stats gameStats;
+    gameStats.init(numOfMines);
 
     Font font;
 	Text win;
@@ -170,9 +181,13 @@ void Game::CreateGameWindow() {
 	lose.setCharacterSize(40);
 	lose.setPosition(max_x / 2 - 82, max_y / 2 - 30);
 
+    gameStats.SetPosition(max_x, max_y);
+
     CreateCells();
 
     int numCheckedCell = 0;
+    int numOfFlags = 0;
+
     while(window.isOpen()) {
         while(window.pollEvent(event)) {
             if (event.type == Event::Closed) {
@@ -180,10 +195,22 @@ void Game::CreateGameWindow() {
                 CreateSettingsWindow();
             }
         }
+
         if (isGamePaused == false) {
             Player.LeftClickOnCell(window, cell, cellDraw, isMineExploded, numCheckedCell);
-            Player.RightClickOnCell(window, cell, cellDraw);
+            Player.RightClickOnCell(window, cell, cellDraw, numOfFlags);
             Sleep(44);
+            gameStats.UpdateFlags(numOfFlags);
+            gameStats.UpdateTimer();
+        }
+
+        if (gameStats.isClickedOnStart(window) == true) {
+            isGamePaused = false;
+            CreateCells();
+            numCheckedCell = 0;
+            numOfFlags = 0;
+            gameStats.init(numOfMines);
+            Player.init(numOfCells, Nrow, Ncol);
         }
 
         window.clear();
@@ -206,6 +233,12 @@ void Game::CreateGameWindow() {
             window.draw(win);
             isGamePaused = true;
         }
+
+        window.draw(gameStats.GetStartButtonShape());
+		window.draw(gameStats.GetMinesCounterShape());
+		window.draw(gameStats.GetTimerShape());
+		window.draw(gameStats.GetMinesCounterText());
+		window.draw(gameStats.GetTimerText());
 
         window.display();
     }
