@@ -35,5 +35,5 @@ public:
         stateOfCells.assign(num, 0);//unchecked
     }
     void LeftClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw, bool& isMineExploded, int& numCheckedCell);
-    void RightClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw, int& numOfFlags);
+    void RightClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw, vector<bool>& Flags, int& numOfFlags);
 };

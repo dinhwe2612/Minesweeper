@@ -11,6 +11,7 @@ void Game::CreateCells() {
     isMineExploded = false;
     isGamePaused = false;
 
+    Flags.assign(numOfCells, false);
     IdMineCells.clear();
     cell.clear();
     cellDraw.clear();
@@ -159,28 +160,12 @@ void Game::CreateGameWindow() {
     RenderWindow window(VideoMode(max_x, max_y), "Minesweeper", Style::Titlebar | Style::Close);
     Event event;
     Field field(max_x, max_y);
+
     Manipulation Player;
     Player.init(numOfCells, Nrow, Ncol);
+
     Stats gameStats;
     gameStats.init(numOfMines);
-
-    Font font;
-	Text win;
-	font.loadFromFile("Fonts\\arial.ttf");
-	win.setFont(font);
-	win.setFillColor(Color::Green);
-	win.setString("You Win!");
-	win.setCharacterSize(40);
-	win.setPosition(max_x / 2 - 82, max_y / 2 - 30);
-
-	Text lose;
-	font.loadFromFile("Fonts\\arial.ttf");
-	lose.setFont(font);
-	lose.setFillColor(Color::Red);
-	lose.setString("You Lose!");
-	lose.setCharacterSize(40);
-	lose.setPosition(max_x / 2 - 82, max_y / 2 - 30);
-
     gameStats.SetPosition(max_x, max_y);
 
     CreateCells();
@@ -198,14 +183,13 @@ void Game::CreateGameWindow() {
 
         if (isGamePaused == false) {
             Player.LeftClickOnCell(window, cell, cellDraw, isMineExploded, numCheckedCell);
-            Player.RightClickOnCell(window, cell, cellDraw, numOfFlags);
+            Player.RightClickOnCell(window, cell, cellDraw, Flags, numOfFlags);
             Sleep(44);
             gameStats.UpdateFlags(numOfFlags);
             gameStats.UpdateTimer();
         }
 
         if (gameStats.isClickedOnStart(window) == true) {
-            isGamePaused = false;
             CreateCells();
             numCheckedCell = 0;
             numOfFlags = 0;
@@ -221,17 +205,11 @@ void Game::CreateGameWindow() {
         }
 
         if (isMineExploded == true) {
-            for(int id : IdMineCells) {
-                cellDraw[id].SetTexture("Images\\ExplodedMine.png");
-                window.draw(cellDraw[id].GetRectangleShape());
-            }
-            window.draw(lose);
-            isGamePaused = true;
+            Lose(window);
         }
 
         if (numCheckedCell + numOfMines == numOfCells) {
-            window.draw(win);
-            isGamePaused = true;
+            Win(window);
         }
 
         window.draw(gameStats.GetStartButtonShape());
@@ -280,4 +258,45 @@ void Game::CreateSettingsWindow() {
         window.draw(start);
         window.display();
     }
+}
+
+void Game::Win(RenderWindow& window) {
+    Font font;
+	Text win;
+	font.loadFromFile("Fonts\\arial.ttf");
+	win.setFont(font);
+	win.setFillColor(Color::Green);
+	win.setString("You Win!");
+	win.setCharacterSize(40);
+	win.setPosition(max_x / 2 - 82, max_y / 2 - 30);
+
+    window.draw(win);
+    isGamePaused = true;
+}
+
+void Game::Lose(RenderWindow& window) {
+    Font font;
+    Text lose;
+	font.loadFromFile("Fonts\\arial.ttf");
+	lose.setFont(font);
+	lose.setFillColor(Color::Red);
+	lose.setString("You Lose!");
+	lose.setCharacterSize(40);
+	lose.setPosition(max_x / 2 - 82, max_y / 2 - 30);
+
+    for(int id = 0; id < numOfCells; ++id) {
+        if (Flags[id] == true) {
+            if (cell[id].IsMine() == true) {
+                cellDraw[id].SetTexture("Images\\Mine.png");
+            } else {
+                cellDraw[id].SetTexture("Images\\NotAMine.png");
+            }
+        } else if (cell[id].IsMine() == true) {
+            cellDraw[id].SetTexture("Images\\ExplodedMine.png");
+        }
+        window.draw(cellDraw[id].GetRectangleShape());
+    }
+
+    window.draw(lose);
+    isGamePaused = true;
 }

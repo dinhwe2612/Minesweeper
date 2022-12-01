@@ -15,6 +15,7 @@ private:
     int Nrow, Ncol;
     int dx[8] = {-1, 0, 1, 1, 1, 0, -1, -1};
     int dy[8] = {-1, -1, -1, 0, 1, 1, 1, 0};
+    vector<bool> Flags;
     //012
     //7.3
     //654
@@ -26,6 +27,9 @@ private:
     void SetImage(int id);
     pair<int, int> toCoord(int id);
     int toId(int x, int y);
+
+    void Win(RenderWindow& window);
+    void Lose(RenderWindow& window);
 
     void SetGameWindowParameters(int n);
     void StartGameWindow(RenderWindow &window, Text start, InputBar cellGrid, InputBar NumberOfMines);
