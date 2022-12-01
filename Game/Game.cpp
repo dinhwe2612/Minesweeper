@@ -137,24 +137,6 @@ void Game::SetGameWindowParameters(int n) {
 	}
 	cout << max_x << ' ' << max_y << ' ' << sqrtNumOfCells << ' ' << numOfCells << ' ' << numOfMines << '\n';
 }
-void Game::StartGameWindow(RenderWindow& window, Text start, InputBar cellGrid, InputBar NumberOfMines) {
-    Vector2i mousePosition = Mouse::getPosition(window);
-
-    if (mousePosition.x >= start.getPosition().x && mousePosition.x <= 210) {
-        if (mousePosition.y >= start.getPosition().y && mousePosition.y <= 166) {
-            start.setFillColor(Color::Yellow);
-            if (Mouse::isButtonPressed(Mouse::Left)) {
-                numOfMines = NumberOfMines.GetInput();
-                SetGameWindowParameters(cellGrid.GetInput());
-                window.close();
-                CreateGameWindow();
-            }
-        } else {
-            start.setFillColor(Color::White);
-        }
-    }
-//    cout << cellGrid.GetInput() << ' ' << numOfMines << '\n';
-}
 void Game::CreateGameWindow() {
     Sleep(80);
     RenderWindow window(VideoMode(max_x, max_y), "Minesweeper", Style::Titlebar | Style::Close);
@@ -176,6 +158,7 @@ void Game::CreateGameWindow() {
     while(window.isOpen()) {
         while(window.pollEvent(event)) {
             if (event.type == Event::Closed) {
+                CLOSE:
                 window.close();
                 CreateSettingsWindow();
             }
@@ -197,6 +180,12 @@ void Game::CreateGameWindow() {
             Player.init(numOfCells, Nrow, Ncol);
         }
 
+        if (gameStats.isClickedOnSave(window) == true) {
+            SaveGame();
+            cout << "YES" << endl;
+            goto CLOSE;
+        }
+
         window.clear();
         window.draw(field.GetRectangleShape());
 
@@ -213,49 +202,12 @@ void Game::CreateGameWindow() {
         }
 
         window.draw(gameStats.GetStartButtonShape());
+        window.draw(gameStats.GetSaveButtonShape());
 		window.draw(gameStats.GetMinesCounterShape());
 		window.draw(gameStats.GetTimerShape());
 		window.draw(gameStats.GetMinesCounterText());
 		window.draw(gameStats.GetTimerText());
 
-        window.display();
-    }
-}
-void Game::CreateSettingsWindow() {
-    RenderWindow window(VideoMode(310.f, 367.f), "Settings", Style::Titlebar | Style::Close);
-    Event event;
-    InputBar cellGrid(170, 30, 7.f, 317.f, "cell grid X*X = ");
-    InputBar minesNumber(120, 30, 183.f, 317.f, "mines = ");
-
-    Font font;
-    Text start;
-    font.loadFromFile("Fonts\\arial.ttf");
-    start.setFont(font);
-    start.setFillColor(Color::White);
-    start.setString("Start");
-    start.setCharacterSize(60);
-    start.setPosition(85.f, 103.f);
-
-    while(window.isOpen()) {
-        while(window.pollEvent(event)) {
-            if (event.type == Event::Closed) {
-                window.close();
-            }
-            if (event.type == Event::TextEntered) {
-                cellGrid.SetInputText(window, event);
-                minesNumber.SetInputText(window, event);
-            }
-        }
-        cellGrid.MouseOverInputBox(window);
-        minesNumber.MouseOverInputBox(window);
-        StartGameWindow(window, start, cellGrid, minesNumber);
-
-        window.clear();
-        window.draw(cellGrid.GetInputShape());
-        window.draw(cellGrid.inputText);
-        window.draw(minesNumber.GetInputShape());
-        window.draw(minesNumber.GetInputText());
-        window.draw(start);
         window.display();
     }
 }
@@ -299,4 +251,17 @@ void Game::Lose(RenderWindow& window) {
 
     window.draw(lose);
     isGamePaused = true;
+}
+
+void Game::SaveGame() {
+    cout << 1 << '\n';
+    fstream fout;
+    fout.open("SaveGame.txt");
+    freopen("SaveGame.txt", "w", stdout);
+
+    fout << numOfCells << ' ' << numOfMines << ' ' << sqrtNumOfCells << ' ' << Nrow << ' ' << Ncol << '\n';
+    for(int id : IdMineCells) fout << id << ' ';fout << '\n';
+    for(int id = 0; id < numOfCells; ++id) fout << Flags[id] << ' ';fout << '\n';
+
+    fout.close();
 }

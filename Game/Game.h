@@ -32,8 +32,10 @@ private:
     void Lose(RenderWindow& window);
 
     void SetGameWindowParameters(int n);
-    void StartGameWindow(RenderWindow &window, Text start, InputBar cellGrid, InputBar NumberOfMines);
+    void StartGameWindow(RenderWindow &window, Text& start, InputBar cellGrid, InputBar NumberOfMines);
+    void ContinueGameWindow(RenderWindow& window, Text& continuee);
 
+    void SaveGame();
 public:
     Game() {
         isMineExploded = false;

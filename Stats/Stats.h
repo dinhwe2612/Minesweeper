@@ -7,18 +7,20 @@ using namespace sf;
 
 class Stats {
 private:
-    RectangleShape timer, minesCounter, startButton;
-    Texture textureStartButton;
+    RectangleShape timer, minesCounter, startButton, saveButton;
+    Texture textureStartButton, textureSaveButton;
     Text minesCounterText, timerText;
     Font font;
     int startingNumberOfMines;
     int minutes, sz;
-    float startButtonX, startButtonY, seconds;
+    float startButtonX, startButtonY, seconds, saveButtonX, saveButtonY;
 public:
     Stats() {
         sz = 30;
         startButtonX = 0;
         startButtonY = 0;
+        saveButtonX = 0;
+        saveButtonY = 0;
 
         font.loadFromFile("Fonts\\arial.ttf");
 
@@ -28,6 +30,10 @@ public:
         textureStartButton.loadFromFile("Images\\StartButton.png");
         startButton.setSize(Vector2f(sz, sz));
         startButton.setTexture(&textureStartButton);
+
+        textureSaveButton.loadFromFile("Images\\Save.png");
+        saveButton.setSize(Vector2f(sz, sz));
+        saveButton.setTexture(&textureSaveButton);
 
         minesCounterText.setFont(font);
         minesCounterText.setCharacterSize(20);
@@ -52,10 +58,12 @@ public:
     RectangleShape& GetTimerShape();
     RectangleShape& GetMinesCounterShape();
     RectangleShape& GetStartButtonShape();
+    RectangleShape& GetSaveButtonShape();
     Text& GetMinesCounterText();
     Text& GetTimerText();
     void SetPosition(float x, float y);
     void UpdateFlags(int numOfFlags);
     void UpdateTimer();
     bool isClickedOnStart(Window& window);
+    bool isClickedOnSave(Window& window);
 };
