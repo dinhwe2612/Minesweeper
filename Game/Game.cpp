@@ -192,6 +192,7 @@ void Game::CreateGameWindow() {
         }
 
         if (numCheckedCell + numOfMines == numOfCells) {
+            if (isGamePaused == false) updateLeaderBoard(gameStats.getTime());
             Win(window);
         }
 
@@ -248,35 +249,35 @@ void Game::Lose(RenderWindow& window) {
 }
 
 void Game::SaveData() {
-    fstream fout;
-    fout.open("Save\\Game.txt");
+    fstream file;
+    file.open("Save\\Game.txt");
 
-    fout << numOfCells << ' ' << numOfMines << ' ' << sqrtNumOfCells << ' ' << Nrow << ' ' << Ncol << '\n';
-    fout << numCheckedCell << ' ' << numOfFlags << '\n';
-    for(int id : IdMineCells) fout << id << ' ';fout << '\n';
-    for(int id = 0; id < numOfCells; ++id) fout << Flags[id] << ' ';fout << '\n';
+    file << numOfCells << ' ' << numOfMines << ' ' << sqrtNumOfCells << ' ' << Nrow << ' ' << Ncol << '\n';
+    file << numCheckedCell << ' ' << numOfFlags << '\n';
+    for(int id : IdMineCells) file << id << ' ';file << '\n';
+    for(int id = 0; id < numOfCells; ++id) file << Flags[id] << ' ';file << '\n';
 
-    fout.close();
+    file.close();
 }
 void Game::LoadData() {
-    fstream fin;
-    fin.open("Save\\Game.txt");
+    fstream file;
+    file.open("Save\\Game.txt");
 
-    fin >> numOfCells >> numOfMines >> sqrtNumOfCells >> Nrow >> Ncol;
+    file >> numOfCells >> numOfMines >> sqrtNumOfCells >> Nrow >> Ncol;
     init();
-    fin >> numCheckedCell >> numOfFlags;
+    file >> numCheckedCell >> numOfFlags;
     for(int i = 0; i < numOfMines; ++i) {
-        int id; fin >> id;
+        int id; file >> id;
         IdMineCells.push_back(id);
         cell[id].isMine = true;
     }
-    fin.close();
+    file.close();
 
-    fin.open("Save\\Manipulation.txt");
+    file.open("Save\\Manipulation.txt");
     for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
         SetImage(id);
 
-        int st; fin >> st;
+        int st; file >> st;
         if (st == 0) cellDraw[id].SetTexture("Images\\UnCheckedCell.png");
         else if (st == 1) cellDraw[id] = cell[id];
         else cellDraw[id].SetTexture("Images\\Flag.png");
@@ -289,5 +290,25 @@ void Game::LoadData() {
             ++j;
         }
     }
-    fin.close();
+    file.close();
+}
+void Game::updateLeaderBoard(pair<int, float> time) {
+    cout << "updated ";
+    fstream file;
+    file.open("Save\\Leaderboard.txt");
+    int numOfscores;
+    file >> numOfscores;
+    vector<pair<int, float>> Scores = {time};
+    for(int i = 0; i < min(numOfscores, 49); ++i) {
+        int minu, sec; file >> minu >> sec;
+        Scores.push_back({minu, sec});
+    }
+    file.close();
+    file.open("Save\\Leaderboard.txt");
+    sort(Scores.begin(), Scores.end());
+    file << Scores.size() << '\n';
+    for(auto i : Scores) {
+        file << i.first << ' ' << i.second << '\n';
+    }
+    file.close();
 }

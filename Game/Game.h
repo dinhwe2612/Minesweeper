@@ -34,10 +34,8 @@ private:
     void SetGameWindowParameters(int n);
     void StartGameWindow(RenderWindow &window, Text& start, InputBar cellGrid, InputBar NumberOfMines);
     void ContinueGameWindow(RenderWindow& window, Text& continuee);
+    void LeaderBoardWindow(RenderWindow& window, Text& Leaderboard);
 public:
-    Game() {
-        isContinueGame = false;
-    }
     void init() {
         isMineExploded = false;
         isGamePaused = false;
@@ -52,7 +50,9 @@ public:
     }
     void CreateGameWindow();
     void CreateSettingsWindow();
+    void CreateLeaderBoardWindow();
 
     void SaveData();
     void LoadData();
+    void updateLeaderBoard(pair<int, float> time);
 };

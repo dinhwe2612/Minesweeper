@@ -69,4 +69,7 @@ public:
 
     void SaveData();
     void LoadData();
+    pair<int, float> getTime() {
+        return {minutes, seconds};
+    }
 };

@@ -11,7 +11,6 @@ void Manipulation::bfs(RenderWindow& window, int id, vector<Cell>& cell, vector<
     if (stateOfCells[id] == Checked) return;
     stateOfCells[id] = Checked;
     ++numCheckedCell;
-    cout << "LEFT" << '\n';
     cout << id << '\n';
     cellDraw[id] = cell[id];
     if (!cell[id].IsEmpty()) return;
@@ -90,18 +89,18 @@ void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell, ve
     }
 }
 void Manipulation::SaveData() {
-    fstream fout;
-    fout.open("Save\\Manipulation.txt");
+    fstream file;
+    file.open("Save\\Manipulation.txt");
     for(int id = 0; id < numOfCells; ++id) {
-        fout << stateOfCells[id] << ' ';
+        file << stateOfCells[id] << ' ';
     }
-    fout.close();
+    file.close();
 }
 void Manipulation::LoadData() {
-    fstream fin;
-    fin.open("Save\\Manipulation.txt");
+    fstream file;
+    file.open("Save\\Manipulation.txt");
     for(int id = 0; id < numOfCells; ++id) {
-        fin >> stateOfCells[id];
+        file >> stateOfCells[id];
     }
-    fin.close();
+    file.close();
 }

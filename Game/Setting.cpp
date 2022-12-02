@@ -10,6 +10,7 @@ void Game::StartGameWindow(RenderWindow& window, Text& start, InputBar cellGrid,
                 numOfMines = NumberOfMines.GetInput();
                 SetGameWindowParameters(cellGrid.GetInput());
                 window.close();
+                isContinueGame = false;
                 CreateGameWindow();
             }
         } else {
@@ -40,6 +41,36 @@ void Game::ContinueGameWindow(RenderWindow& window, Text& continuee) {
         continuee.setFillColor(Color::White);
     }
 }
+void Game::LeaderBoardWindow(RenderWindow& window, Text& Leaderboard) {
+    Vector2i mousePosition = Mouse::getPosition(window);
+
+    if (Leaderboard.getPosition().x <= mousePosition.x && mousePosition.x <= 240) {
+        if (Leaderboard.getPosition().y <= mousePosition.y && mousePosition.y <= 260) {
+            Leaderboard.setFillColor(Color::Yellow);
+            if (Mouse::isButtonPressed(Mouse::Left)) {
+                window.close();
+                CreateLeaderBoardWindow();
+            }
+        } else {
+            Leaderboard.setFillColor(Color::White);
+        }
+    } else {
+        Leaderboard.setFillColor(Color::White);
+    }
+}
+void Game::CreateLeaderBoardWindow() {
+    RenderWindow window(VideoMode(600.f, 400.f), "Leaderboard", Style::Titlebar | Style::Close);
+    Event event;
+
+    while(window.isOpen()) {
+        while(window.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                window.close();
+                CreateSettingsWindow();
+            }
+        }
+    }
+}
 void Game::CreateSettingsWindow() {
     RenderWindow window(VideoMode(310.f, 367.f), "Settings", Style::Titlebar | Style::Close);
     Event event;
@@ -57,10 +88,17 @@ void Game::CreateSettingsWindow() {
 
     Text continuee;
     continuee.setFont(font);
-    start.setFillColor(Color::White);
+    continuee.setFillColor(Color::White);
     continuee.setString("Continue");
     continuee.setCharacterSize(30);
-    continuee.setPosition(85.f, 183.f);
+    continuee.setPosition(87.f, 180.f);
+
+    Text Leaderboard;
+    Leaderboard.setFont(font);
+    Leaderboard.setFillColor(Color::White);
+    Leaderboard.setString("Leaderboard");
+    Leaderboard.setCharacterSize(28);
+    Leaderboard.setPosition(74.f, 223.f);
 
     while(window.isOpen()) {
         while(window.pollEvent(event)) {
@@ -76,6 +114,7 @@ void Game::CreateSettingsWindow() {
         minesNumber.MouseOverInputBox(window);
         StartGameWindow(window, start, cellGrid, minesNumber);
         ContinueGameWindow(window, continuee);
+        LeaderBoardWindow(window, Leaderboard);
 
         window.clear();
         window.draw(cellGrid.GetInputShape());
@@ -84,6 +123,7 @@ void Game::CreateSettingsWindow() {
         window.draw(minesNumber.GetInputText());
         window.draw(start);
         window.draw(continuee);
+        window.draw(Leaderboard);
         window.display();
     }
 }

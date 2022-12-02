@@ -69,14 +69,14 @@ bool Stats::isClickedOnSave(Window& window) {
     return false;
 }
 void Stats::SaveData() {
-    fstream fout;
-    fout.open("Save\\Stats.txt");
-    fout << minutes << ' ' << seconds;
-    fout.close();
+    fstream file;
+    file.open("Save\\Stats.txt");
+    file << minutes << ' ' << seconds;
+    file.close();
 }
 void Stats::LoadData() {
-    fstream fin;
-    fin.open("Save\\Stats.txt");
-    fin >> minutes >> seconds;
-    fin.close();
+    fstream file;
+    file.open("Save\\Stats.txt");
+    file >> minutes >> seconds;
+    file.close();
 }
