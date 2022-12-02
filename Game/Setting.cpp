@@ -26,11 +26,12 @@ void Game::ContinueGameWindow(RenderWindow& window, Text& continuee) {
         if (continuee.getPosition().y <= mousePosition.y && mousePosition.y <= 220) {
             continuee.setFillColor(Color::Yellow);
             if (Mouse::isButtonPressed(Mouse::Left)) {
-//                if (GetPreviousGame() == true) {
-//                    CreateGameWindow();
-//                } else {
-//
-//                }
+                LoadData();
+                SetGameWindowParameters(numOfCells);
+                window.close();
+                isContinueGame = true;
+                cout << numOfCells << '\n';
+                CreateGameWindow();
             }
         } else {
             continuee.setFillColor(Color::White);

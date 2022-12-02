@@ -1,7 +1,7 @@
 #include "Stats.h"
 
 void Stats::UpdateTimer() {
-    seconds += 0.05;
+    seconds += 0.047;
     if (seconds >= 60) {
         ++minutes;
         seconds = 0;
@@ -67,4 +67,16 @@ bool Stats::isClickedOnSave(Window& window) {
         }
     }
     return false;
+}
+void Stats::SaveData() {
+    fstream fout;
+    fout.open("Save\\Stats.txt");
+    fout << minutes << ' ' << seconds;
+    fout.close();
+}
+void Stats::LoadData() {
+    fstream fin;
+    fin.open("Save\\Stats.txt");
+    fin >> minutes >> seconds;
+    fin.close();
 }

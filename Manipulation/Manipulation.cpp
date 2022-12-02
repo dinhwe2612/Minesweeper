@@ -89,3 +89,19 @@ void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell, ve
         }
     }
 }
+void Manipulation::SaveData() {
+    fstream fout;
+    fout.open("Save\\Manipulation.txt");
+    for(int id = 0; id < numOfCells; ++id) {
+        fout << stateOfCells[id] << ' ';
+    }
+    fout.close();
+}
+void Manipulation::LoadData() {
+    fstream fin;
+    fin.open("Save\\Manipulation.txt");
+    for(int id = 0; id < numOfCells; ++id) {
+        fin >> stateOfCells[id];
+    }
+    fin.close();
+}

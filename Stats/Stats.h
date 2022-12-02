@@ -66,4 +66,7 @@ public:
     void UpdateTimer();
     bool isClickedOnStart(Window& window);
     bool isClickedOnSave(Window& window);
+
+    void SaveData();
+    void LoadData();
 };

@@ -12,9 +12,6 @@ private:
     int Nrow, Ncol;
     int dx[8] = {-1, 0, 1, 1, 1, 0, -1, -1};
     int dy[8] = {-1, -1, -1, 0, 1, 1, 1, 0};
-    //012
-    //7.3
-    //654
     vector<int> stateOfCells;
 
     pair<int, int> toCoord(int id);
@@ -36,4 +33,6 @@ public:
     }
     void LeftClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw, bool& isMineExploded, int& numCheckedCell);
     void RightClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw, vector<bool>& Flags, int& numOfFlags);
+    void SaveData();
+    void LoadData();
 };

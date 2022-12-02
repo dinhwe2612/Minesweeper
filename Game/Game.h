@@ -13,13 +13,13 @@ private:
     vector<int> IdMineCells;
     int numOfCells, numOfMines, sqrtNumOfCells;
     int Nrow, Ncol;
+    int numCheckedCell;
+    int numOfFlags;
     int dx[8] = {-1, 0, 1, 1, 1, 0, -1, -1};
     int dy[8] = {-1, -1, -1, 0, 1, 1, 1, 0};
     vector<bool> Flags;
-    //012
-    //7.3
-    //654
     bool isMineExploded, isGamePaused;
+    bool isContinueGame;
     float max_x, max_y;
 
     void CreateCells();
@@ -34,13 +34,25 @@ private:
     void SetGameWindowParameters(int n);
     void StartGameWindow(RenderWindow &window, Text& start, InputBar cellGrid, InputBar NumberOfMines);
     void ContinueGameWindow(RenderWindow& window, Text& continuee);
-
-    void SaveGame();
 public:
     Game() {
+        isContinueGame = false;
+    }
+    void init() {
         isMineExploded = false;
         isGamePaused = false;
+        numCheckedCell = 0;
+        numOfFlags = 0;
+        Flags.assign(numOfCells, false);
+        IdMineCells.clear();
+        cell.clear();
+        cellDraw.clear();
+        cell.resize(numOfCells);
+        cellDraw.resize(numOfCells);
     }
     void CreateGameWindow();
     void CreateSettingsWindow();
+
+    void SaveData();
+    void LoadData();
 };

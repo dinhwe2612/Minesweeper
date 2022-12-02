@@ -90,10 +90,13 @@
 		<Unit filename="Field/Field.h" />
 		<Unit filename="Game/Game.cpp" />
 		<Unit filename="Game/Game.h" />
+		<Unit filename="Game/Setting.cpp" />
 		<Unit filename="InputBar/InpuBar.h" />
 		<Unit filename="InputBar/InputBar.cpp" />
 		<Unit filename="Manipulation/Manipulation.cpp" />
 		<Unit filename="Manipulation/Manipulation.h" />
+		<Unit filename="Stats/Stats.cpp" />
+		<Unit filename="Stats/Stats.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

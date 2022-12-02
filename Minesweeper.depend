@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1669265505 source:e:\hcmus\project\minesweeper\main.cpp
+1669976398 source:e:\hcmus\project\minesweeper\main.cpp
 	"Game/Game.h"
 
 1525812018 c:\users\msi 203vn\.vscode\sfml-2.5.1\include\sfml\graphics.hpp
@@ -411,7 +411,7 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1669909177 source:e:\hcmus\project\minesweeper\game\game.cpp
+1669983637 source:e:\hcmus\project\minesweeper\game\game.cpp
 	"Game.h"
 	"../Field/Field.h"
 	"../Manipulation/Manipulation.h"
@@ -420,7 +420,7 @@
 	<ctime>
 	<windows.h>
 
-1669907963 e:\hcmus\project\minesweeper\game\game.h
+1669982682 e:\hcmus\project\minesweeper\game\game.h
 	"../Cell/Cell.h"
 	"../InputBar/InpuBar.h"
 	<bits/stdc++.h>
@@ -454,23 +454,23 @@
 	<bits/stdc++.h>
 	<SFML/Graphics.hpp>
 
-1669899634 source:e:\hcmus\project\minesweeper\manipulation\manipulation.cpp
+1669980655 source:e:\hcmus\project\minesweeper\manipulation\manipulation.cpp
 	"Manipulation.h"
 	<windows.h>
 
-1669899588 e:\hcmus\project\minesweeper\manipulation\manipulation.h
+1669981303 e:\hcmus\project\minesweeper\manipulation\manipulation.h
 	"../Game/Game.h"
 	<bits/stdc++.h>
 	<SFML/Graphics.hpp>
 
-1669908705 source:e:\hcmus\project\minesweeper\stats\stats.cpp
+1669982234 source:e:\hcmus\project\minesweeper\stats\stats.cpp
 	"Stats.h"
 
-1669907630 e:\hcmus\project\minesweeper\stats\stats.h
+1669980640 e:\hcmus\project\minesweeper\stats\stats.h
 	"../Cell/Cell.h"
 	<bits/stdc++.h>
 	<SFML/Graphics.hpp>
 
-1669906311 source:e:\hcmus\project\minesweeper\game\setting.cpp
+1669982913 source:e:\hcmus\project\minesweeper\game\setting.cpp
 	"Game.h"
 

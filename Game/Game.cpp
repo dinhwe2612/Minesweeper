@@ -7,16 +7,7 @@
 #include <windows.h>
 
 void Game::CreateCells() {
-    //init
-    isMineExploded = false;
-    isGamePaused = false;
-
-    Flags.assign(numOfCells, false);
-    IdMineCells.clear();
-    cell.clear();
-    cellDraw.clear();
-    cell.resize(numOfCells);
-    cellDraw.resize(numOfCells);
+    init();
     //for random
     vector<int> Ids;
     for(int id = 0; id < numOfCells; ++id) Ids.push_back(id);
@@ -150,10 +141,11 @@ void Game::CreateGameWindow() {
     gameStats.init(numOfMines);
     gameStats.SetPosition(max_x, max_y);
 
-    CreateCells();
-
-    int numCheckedCell = 0;
-    int numOfFlags = 0;
+    if (isContinueGame == true) {
+        LoadData();
+        gameStats.LoadData();
+        Player.LoadData();
+    } else CreateCells();
 
     while(window.isOpen()) {
         while(window.pollEvent(event)) {
@@ -170,18 +162,20 @@ void Game::CreateGameWindow() {
             Sleep(44);
             gameStats.UpdateFlags(numOfFlags);
             gameStats.UpdateTimer();
+            cout << numCheckedCell << '\n';
         }
 
         if (gameStats.isClickedOnStart(window) == true) {
             CreateCells();
-            numCheckedCell = 0;
-            numOfFlags = 0;
+
             gameStats.init(numOfMines);
             Player.init(numOfCells, Nrow, Ncol);
         }
 
-        if (gameStats.isClickedOnSave(window) == true) {
-            SaveGame();
+        if (isGamePaused == false && gameStats.isClickedOnSave(window) == true) {
+            SaveData();
+            Player.SaveData();
+            gameStats.SaveData();
             cout << "YES" << endl;
             goto CLOSE;
         }
@@ -253,15 +247,47 @@ void Game::Lose(RenderWindow& window) {
     isGamePaused = true;
 }
 
-void Game::SaveGame() {
-    cout << 1 << '\n';
+void Game::SaveData() {
     fstream fout;
-    fout.open("SaveGame.txt");
-    freopen("SaveGame.txt", "w", stdout);
+    fout.open("Save\\Game.txt");
 
     fout << numOfCells << ' ' << numOfMines << ' ' << sqrtNumOfCells << ' ' << Nrow << ' ' << Ncol << '\n';
+    fout << numCheckedCell << ' ' << numOfFlags << '\n';
     for(int id : IdMineCells) fout << id << ' ';fout << '\n';
     for(int id = 0; id < numOfCells; ++id) fout << Flags[id] << ' ';fout << '\n';
 
     fout.close();
+}
+void Game::LoadData() {
+    fstream fin;
+    fin.open("Save\\Game.txt");
+
+    fin >> numOfCells >> numOfMines >> sqrtNumOfCells >> Nrow >> Ncol;
+    init();
+    fin >> numCheckedCell >> numOfFlags;
+    for(int i = 0; i < numOfMines; ++i) {
+        int id; fin >> id;
+        IdMineCells.push_back(id);
+        cell[id].isMine = true;
+    }
+    fin.close();
+
+    fin.open("Save\\Manipulation.txt");
+    for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
+        SetImage(id);
+
+        int st; fin >> st;
+        if (st == 0) cellDraw[id].SetTexture("Images\\UnCheckedCell.png");
+        else if (st == 1) cellDraw[id] = cell[id];
+        else cellDraw[id].SetTexture("Images\\Flag.png");
+
+        cellDraw[id].SetPosition(i * cellDraw[id].sz + sqrtNumOfCells * 0.5f, j * cellDraw[id].sz + sqrtNumOfCells * 5.7f);
+        cell[id].SetPosition(i * cell[id].sz + sqrtNumOfCells * 0.5f, j * cell[id].sz + sqrtNumOfCells * 5.7f);
+
+        if (++i == sqrtNumOfCells) {
+            i = 0;
+            ++j;
+        }
+    }
+    fin.close();
 }
