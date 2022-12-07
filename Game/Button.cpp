@@ -9,7 +9,7 @@ void Game::StartButton(RenderWindow& window, Text& start) {
             if (Mouse::isButtonPressed(Mouse::Left)) {
                 window.close();
                 isContinueGame = false;
-                CreateStartWindow();
+                CreateLevelWindow();
             }
         } else {
             start.setFillColor(Color::White);

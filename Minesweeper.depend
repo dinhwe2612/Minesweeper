@@ -411,7 +411,7 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1670423907 source:e:\hcmus\project\minesweeper\game\game.cpp
+1670424120 source:e:\hcmus\project\minesweeper\game\game.cpp
 	"Game.h"
 	"../Field/Field.h"
 	"../Manipulation/Manipulation.h"
@@ -420,7 +420,7 @@
 	<ctime>
 	<windows.h>
 
-1670421441 e:\hcmus\project\minesweeper\game\game.h
+1670424206 e:\hcmus\project\minesweeper\game\game.h
 	"../Cell/Cell.h"
 	"../InputBar/InpuBar.h"
 	<bits/stdc++.h>
@@ -471,7 +471,7 @@
 	<bits/stdc++.h>
 	<SFML/Graphics.hpp>
 
-1670423734 source:e:\hcmus\project\minesweeper\game\setting.cpp
+1670424193 source:e:\hcmus\project\minesweeper\game\setting.cpp
 	"Game.h"
 	<ctime>
 	<windows.h>

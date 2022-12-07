@@ -54,7 +54,7 @@ public:
         cellDraw.resize(numOfCells);
     }
     void CreateGameWindow();
-    void CreateStartWindow();
+    void CreateLevelWindow();
     void CreateSettingsWindow();
     void CreateLeaderBoardWindow();
 

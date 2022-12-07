@@ -2,9 +2,9 @@
 #include <ctime>
 #include <windows.h>
 
-void Game::CreateStartWindow() {
+void Game::CreateLevelWindow() {
     Sleep(200);
-    RenderWindow window(VideoMode(310.f, 367.f), "Settings", Style::Titlebar | Style::Close);
+    RenderWindow window(VideoMode(310.f, 367.f), "Level", Style::Titlebar | Style::Close);
     Event event;
     InputBar cellGrid(170, 30, 7.f, 317.f, "Cell grid X*X = ");
     InputBar minesNumber(120, 30, 183.f, 317.f, "Mines = ");
