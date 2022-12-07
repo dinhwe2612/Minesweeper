@@ -15,7 +15,7 @@ RectangleShape& InputBar::GetInputShape() {
     return inputShape;
 }
 int InputBar::GetInput() {
-    cout << IsAddedNumberInteger() << '\n';
+//    cout << IsAddedNumberInteger() << '\n';
     if (addedNumber.getSize() == 0 || IsAddedNumberInteger() == false) {
         return 1;
     } else {
@@ -49,7 +49,7 @@ void InputBar::SetInputText(Window& window, Event& event) {
             }
             inputText.setString(input);
             string s = addedNumber;
-            cout << s << '\n';
+//            cout << s << '\n';
         }
     }
 }

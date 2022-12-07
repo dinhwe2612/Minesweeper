@@ -61,7 +61,7 @@ bool Stats::isClickedOnSave(Window& window) {
     if (Mouse::isButtonPressed(Mouse::Left)) {
         if (saveButtonX <= mousePosition.x && mousePosition.x <= saveButtonX + sz) {
             if (saveButtonY <= mousePosition.y && mousePosition.y <= saveButtonY + sz) {
-                cout << "save" << ' ';
+//                cout << "save" << ' ';
                 return true;
             }
         }

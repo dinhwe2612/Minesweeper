@@ -11,7 +11,7 @@ void Manipulation::bfs(RenderWindow& window, int id, vector<Cell>& cell, vector<
     if (stateOfCells[id] == Checked) return;
     stateOfCells[id] = Checked;
     ++numCheckedCell;
-    cout << id << '\n';
+//    cout << id << '\n';
     cellDraw[id] = cell[id];
     if (!cell[id].IsEmpty()) return;
     queue<int> q;
@@ -31,7 +31,7 @@ void Manipulation::bfs(RenderWindow& window, int id, vector<Cell>& cell, vector<
             cellDraw[newId] = cell[newId];
             stateOfCells[newId] = Checked;
             ++numCheckedCell;
-            cout << newId << '\n';
+//            cout << newId << '\n';
             if (cell[newId].IsEmpty()) q.push(newId);
         }
     }
@@ -73,12 +73,12 @@ void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell, ve
             ++cnt;
             if (stateOfCells[id] == Unchecked) {
                 cellDraw[id].SetTexture("Images\\Flag.png");
-                cout << "Flag" << '\n';
+//                cout << "Flag" << '\n';
                 stateOfCells[id] = flagPlaced;
                 ++numOfFlags;
                 Flags[id] = true;
             } else {
-                cout << "UnFlag" << '\n';
+//                cout << "UnFlag" << '\n';
                 cellDraw[id].SetTexture("Images\\UnCheckedCell.png");
                 stateOfCells[id] = Unchecked;
                 --numOfFlags;

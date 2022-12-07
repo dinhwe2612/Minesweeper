@@ -14,13 +14,13 @@ void Game::CreateCells() {
     mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
     shuffle(Ids.begin(), Ids.end(), rng);
     for(int i = 0; i < numOfMines; ++i) IdMineCells.push_back(Ids[i]);
-    cout << "Mines: ";
+//    cout << "Mines: ";
     for(int i = 0; i < numOfMines; ++i) {
         int id = IdMineCells[i];
         cell[id].isMine = true;
-        cout << id << ' ';
+//        cout << id << ' ';
     }
-    cout << '\n';
+//    cout << '\n';
     //
     for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
         SetImage(id);
@@ -34,11 +34,12 @@ void Game::CreateCells() {
         }
     }
     for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
-        cout << CountSurroundedMines(id) << ' ';
+//        cout << CountSurroundedMines(id) << ' ';
 
         if (++i == sqrtNumOfCells) {
             i = 0;
-            ++j;cout << '\n';
+            ++j;
+//            cout << '\n';
         }
     }
 }
@@ -126,7 +127,7 @@ void Game::SetGameWindowParameters(int n) {
 	else if (numOfMines <= 0) {
 		numOfMines = 1;
 	}
-	cout << max_x << ' ' << max_y << ' ' << sqrtNumOfCells << ' ' << numOfCells << ' ' << numOfMines << '\n';
+//	cout << max_x << ' ' << max_y << ' ' << sqrtNumOfCells << ' ' << numOfCells << ' ' << numOfMines << '\n';
 }
 void Game::CreateGameWindow() {
     Sleep(200);
@@ -175,7 +176,7 @@ void Game::CreateGameWindow() {
             SaveData();
             Player.SaveData();
             gameStats.SaveData();
-            cout << "YES" << endl;
+//            cout << "YES" << endl;
             goto CLOSE;
         }
 

@@ -28,7 +28,6 @@ public:
         numOfCells = num;
         Nrow = Nr;
         Ncol = Nc;
-        cout << num << endl;
         stateOfCells.assign(num, 0);//unchecked
     }
     void LeftClickOnCell(RenderWindow& window, vector<Cell>& cell, vector<Cell>& cellDraw, bool& isMineExploded, int& numCheckedCell);
