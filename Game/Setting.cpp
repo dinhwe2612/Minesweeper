@@ -1,66 +1,113 @@
 #include "Game.h"
+#include <ctime>
+#include <windows.h>
 
-void Game::StartGameWindow(RenderWindow& window, Text& start, InputBar cellGrid, InputBar NumberOfMines) {
-    Vector2i mousePosition = Mouse::getPosition(window);
+void Game::CreateStartWindow() {
+    Sleep(200);
+    RenderWindow window(VideoMode(310.f, 367.f), "Settings", Style::Titlebar | Style::Close);
+    Event event;
+    InputBar cellGrid(170, 30, 7.f, 317.f, "Cell grid X*X = ");
+    InputBar minesNumber(120, 30, 183.f, 317.f, "Mines = ");
 
-    if (start.getPosition().x <= mousePosition.x && mousePosition.x <= 210) {
-        if (start.getPosition().y <= mousePosition.y && mousePosition.y <= 166) {
-            start.setFillColor(Color::Yellow);
-            if (Mouse::isButtonPressed(Mouse::Left)) {
-                numOfMines = NumberOfMines.GetInput();
-                SetGameWindowParameters(cellGrid.GetInput());
+    Font font;
+    font.loadFromFile("Fonts\\arial.ttf");
+    Text TextBeginner;
+    TextBeginner.setFont(font);
+    TextBeginner.setFillColor(Color::Green);
+    TextBeginner.setString("Beginner");
+    TextBeginner.setCharacterSize(40);
+    TextBeginner.setPosition(77, 70);
+    Text TextIntermediate;
+    TextIntermediate.setFont(font);
+    TextIntermediate.setFillColor(Color::Blue);
+    TextIntermediate.setString("Intermediate");
+    TextIntermediate.setCharacterSize(40);
+    TextIntermediate.setPosition(47, 130);
+    Text TextExpert;
+    TextExpert.setFont(font);
+    TextExpert.setFillColor(Color::Red);
+    TextExpert.setString("Expert");
+    TextExpert.setCharacterSize(40);
+    TextExpert.setPosition(93, 190);
+    Text custom;
+    custom.setFont(font);
+    custom.setFillColor(Color::White);
+    custom.setString("Custom");
+    custom.setCharacterSize(40);
+    custom.setPosition(87, 250);
+
+    while(window.isOpen()) {
+        if (window.pollEvent(event)) {
+            if (event.type == Event::Closed) {
                 window.close();
-                isContinueGame = false;
-                CreateGameWindow();
+                CreateSettingsWindow();
             }
-        } else {
-            start.setFillColor(Color::White);
+            if (event.type == Event::TextEntered) {
+                cellGrid.SetInputText(window, event);
+                minesNumber.SetInputText(window, event);
+            }
         }
-    } else {
-        start.setFillColor(Color::White);
+
+        cellGrid.MouseOverInputBox(window);
+        minesNumber.MouseOverInputBox(window);
+
+        beginnerButton(window, TextBeginner);
+        intermediateButton(window, TextIntermediate);
+        expertButton(window, TextExpert);
+        customButton(window, custom, cellGrid, minesNumber);
+
+        window.clear();
+
+        window.draw(TextBeginner);
+        window.draw(TextIntermediate);
+        window.draw(TextExpert);
+        window.draw(custom);
+        window.draw(cellGrid.GetInputShape());
+        window.draw(cellGrid.inputText);
+        window.draw(minesNumber.GetInputShape());
+        window.draw(minesNumber.GetInputText());
+
+        window.display();
     }
 }
-void Game::ContinueGameWindow(RenderWindow& window, Text& continuee) {
-    Vector2i mousePosition = Mouse::getPosition(window);
-
-    if (continuee.getPosition().x <= mousePosition.x && mousePosition.x <= 210) {
-        if (continuee.getPosition().y <= mousePosition.y && mousePosition.y <= 220) {
-            continuee.setFillColor(Color::Yellow);
-            if (Mouse::isButtonPressed(Mouse::Left)) {
-                LoadData();
-                SetGameWindowParameters(numOfCells);
-                window.close();
-                isContinueGame = true;
-                cout << numOfCells << '\n';
-                CreateGameWindow();
-            }
-        } else {
-            continuee.setFillColor(Color::White);
-        }
-    } else {
-        continuee.setFillColor(Color::White);
+void PrintScores(RenderWindow& window, int x, string s) {
+    Font font;
+    Text text;
+    font.loadFromFile("Fonts\\arial.ttf");
+    text.setFont(font);
+    fstream file;
+    text.setFillColor(Color::Green);
+    text.setString(s);
+    text.setCharacterSize(30);
+    text.setPosition(x, 0);
+    window.draw(text);
+    file.open("Save\\" + s + ".txt");
+    int numOfScores = 0;
+    file >> numOfScores;
+    text.setCharacterSize(20);
+    text.setFillColor(Color::White);
+    for(int i = 0; i < numOfScores; ++i) {
+        int minu;
+        float sec; file >> minu >> sec;
+        int sec2 = round(sec * 100);
+        string tmp = to_string(i + 1) + "# ";
+        if (minu) tmp += to_string(minu) + "m";
+        tmp += " " + to_string(sec2/100) + "." + to_string(sec2%100) + "s";
+        text.setString(tmp);
+        text.setPosition(x, 10 + (i + 1) * 30);
+        window.draw(text);
     }
-}
-void Game::LeaderBoardWindow(RenderWindow& window, Text& Leaderboard) {
-    Vector2i mousePosition = Mouse::getPosition(window);
-
-    if (Leaderboard.getPosition().x <= mousePosition.x && mousePosition.x <= 240) {
-        if (Leaderboard.getPosition().y <= mousePosition.y && mousePosition.y <= 260) {
-            Leaderboard.setFillColor(Color::Yellow);
-            if (Mouse::isButtonPressed(Mouse::Left)) {
-                window.close();
-                CreateLeaderBoardWindow();
-            }
-        } else {
-            Leaderboard.setFillColor(Color::White);
-        }
-    } else {
-        Leaderboard.setFillColor(Color::White);
-    }
+    file.close();
 }
 void Game::CreateLeaderBoardWindow() {
     RenderWindow window(VideoMode(600.f, 400.f), "Leaderboard", Style::Titlebar | Style::Close);
     Event event;
+
+    PrintScores(window, 25, "Beginner");
+    PrintScores(window, 225, "Intermediate");
+    PrintScores(window, 485, "Expert");
+
+    window.display();
 
     while(window.isOpen()) {
         while(window.pollEvent(event)) {
@@ -74,8 +121,6 @@ void Game::CreateLeaderBoardWindow() {
 void Game::CreateSettingsWindow() {
     RenderWindow window(VideoMode(310.f, 367.f), "Settings", Style::Titlebar | Style::Close);
     Event event;
-    InputBar cellGrid(170, 30, 7.f, 317.f, "Cell grid X*X = ");
-    InputBar minesNumber(120, 30, 183.f, 317.f, "Mines = ");
 
     Font font;
     Text start;
@@ -105,22 +150,12 @@ void Game::CreateSettingsWindow() {
             if (event.type == Event::Closed) {
                 window.close();
             }
-            if (event.type == Event::TextEntered) {
-                cellGrid.SetInputText(window, event);
-                minesNumber.SetInputText(window, event);
-            }
         }
-        cellGrid.MouseOverInputBox(window);
-        minesNumber.MouseOverInputBox(window);
-        StartGameWindow(window, start, cellGrid, minesNumber);
-        ContinueGameWindow(window, continuee);
-        LeaderBoardWindow(window, Leaderboard);
+        StartButton(window, start);
+        ContinueButton(window, continuee);
+        LeaderBoardButton(window, Leaderboard);
 
         window.clear();
-        window.draw(cellGrid.GetInputShape());
-        window.draw(cellGrid.inputText);
-        window.draw(minesNumber.GetInputShape());
-        window.draw(minesNumber.GetInputText());
         window.draw(start);
         window.draw(continuee);
         window.draw(Leaderboard);

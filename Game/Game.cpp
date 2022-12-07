@@ -129,7 +129,7 @@ void Game::SetGameWindowParameters(int n) {
 	cout << max_x << ' ' << max_y << ' ' << sqrtNumOfCells << ' ' << numOfCells << ' ' << numOfMines << '\n';
 }
 void Game::CreateGameWindow() {
-    Sleep(80);
+    Sleep(200);
     RenderWindow window(VideoMode(max_x, max_y), "Minesweeper", Style::Titlebar | Style::Close);
     Event event;
     Field field(max_x, max_y);
@@ -162,7 +162,6 @@ void Game::CreateGameWindow() {
             Sleep(44);
             gameStats.UpdateFlags(numOfFlags);
             gameStats.UpdateTimer();
-            cout << numCheckedCell << '\n';
         }
 
         if (gameStats.isClickedOnStart(window) == true) {
@@ -252,6 +251,7 @@ void Game::SaveData() {
     fstream file;
     file.open("Save\\Game.txt");
 
+    file << level << '\n';
     file << numOfCells << ' ' << numOfMines << ' ' << sqrtNumOfCells << ' ' << Nrow << ' ' << Ncol << '\n';
     file << numCheckedCell << ' ' << numOfFlags << '\n';
     for(int id : IdMineCells) file << id << ' ';file << '\n';
@@ -263,6 +263,7 @@ void Game::LoadData() {
     fstream file;
     file.open("Save\\Game.txt");
 
+    file >> level;
     file >> numOfCells >> numOfMines >> sqrtNumOfCells >> Nrow >> Ncol;
     init();
     file >> numCheckedCell >> numOfFlags;
@@ -280,7 +281,7 @@ void Game::LoadData() {
         int st; file >> st;
         if (st == 0) cellDraw[id].SetTexture("Images\\UnCheckedCell.png");
         else if (st == 1) cellDraw[id] = cell[id];
-        else cellDraw[id].SetTexture("Images\\Flag.png");
+        else cellDraw[id].SetTexture("Images\\Flag.png"), Flags[id] = true;
 
         cellDraw[id].SetPosition(i * cellDraw[id].sz + sqrtNumOfCells * 0.5f, j * cellDraw[id].sz + sqrtNumOfCells * 5.7f);
         cell[id].SetPosition(i * cell[id].sz + sqrtNumOfCells * 0.5f, j * cell[id].sz + sqrtNumOfCells * 5.7f);
@@ -293,18 +294,23 @@ void Game::LoadData() {
     file.close();
 }
 void Game::updateLeaderBoard(pair<int, float> time) {
-    cout << "updated ";
+    if (level == 0) return;
     fstream file;
-    file.open("Save\\Leaderboard.txt");
-    int numOfscores;
+    if (level == 1) file.open("Save\\Beginner.txt");
+    else if (level == 2) file.open("Save\\Intermediate.txt");
+    else file.open("Save\\Expert.txt");
+    int numOfscores = 0;
     file >> numOfscores;
     vector<pair<int, float>> Scores = {time};
-    for(int i = 0; i < min(numOfscores, 49); ++i) {
+    numOfscores = min(numOfscores, 11);
+    for(int i = 0; i < numOfscores; ++i) {
         int minu, sec; file >> minu >> sec;
         Scores.push_back({minu, sec});
     }
     file.close();
-    file.open("Save\\Leaderboard.txt");
+    if (level == 1) file.open("Save\\Beginner.txt");
+    else if (level == 2) file.open("Save\\Intermediate.txt");
+    else file.open("Save\\Expert.txt");
     sort(Scores.begin(), Scores.end());
     file << Scores.size() << '\n';
     for(auto i : Scores) {

@@ -21,6 +21,7 @@ private:
     bool isMineExploded, isGamePaused;
     bool isContinueGame;
     float max_x, max_y;
+    int level;
 
     void CreateCells();
     int CountSurroundedMines(int id);
@@ -32,9 +33,13 @@ private:
     void Lose(RenderWindow& window);
 
     void SetGameWindowParameters(int n);
-    void StartGameWindow(RenderWindow &window, Text& start, InputBar cellGrid, InputBar NumberOfMines);
-    void ContinueGameWindow(RenderWindow& window, Text& continuee);
-    void LeaderBoardWindow(RenderWindow& window, Text& Leaderboard);
+    void StartButton(RenderWindow &window, Text& start);
+    void ContinueButton(RenderWindow& window, Text& continuee);
+    void LeaderBoardButton(RenderWindow& window, Text& Leaderboard);
+    void beginnerButton(RenderWindow& window, Text& text);
+    void intermediateButton(RenderWindow& window, Text& text);
+    void expertButton(RenderWindow& window, Text& text);
+    void customButton(RenderWindow& window, Text& text, InputBar cellgrid, InputBar NumberOfMines);
 public:
     void init() {
         isMineExploded = false;
@@ -49,6 +54,7 @@ public:
         cellDraw.resize(numOfCells);
     }
     void CreateGameWindow();
+    void CreateStartWindow();
     void CreateSettingsWindow();
     void CreateLeaderBoardWindow();
 
