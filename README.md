@@ -1,5 +1,6 @@
 # Minesweeper
 For cs161
+Link github: https://github.com/dinhwe2612/Minesweeper
 # Requirements
 This code requires SFML to compile. You can follow the link below to learn how to add SMFL.
 
