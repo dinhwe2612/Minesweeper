@@ -88,6 +88,7 @@
 		<Unit filename="Cell/Cell.h" />
 		<Unit filename="Field/Field.cpp" />
 		<Unit filename="Field/Field.h" />
+		<Unit filename="Game/Button.cpp" />
 		<Unit filename="Game/Game.cpp" />
 		<Unit filename="Game/Game.h" />
 		<Unit filename="Game/Setting.cpp" />

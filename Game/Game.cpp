@@ -160,7 +160,7 @@ void Game::CreateGameWindow() {
         if (isGamePaused == false) {
             Player.LeftClickOnCell(window, cell, cellDraw, isMineExploded, numCheckedCell);
             Player.RightClickOnCell(window, cell, cellDraw, Flags, numOfFlags);
-            Sleep(44);
+            Sleep(52);
             gameStats.UpdateFlags(numOfFlags);
             gameStats.UpdateTimer();
         }
@@ -196,7 +196,7 @@ void Game::CreateGameWindow() {
             Win(window);
         }
 
-        window.draw(gameStats.GetStartButtonShape());
+        if (isGamePaused == false) window.draw(gameStats.GetStartButtonShape());
         window.draw(gameStats.GetSaveButtonShape());
 		window.draw(gameStats.GetMinesCounterShape());
 		window.draw(gameStats.GetTimerShape());
@@ -216,8 +216,15 @@ void Game::Win(RenderWindow& window) {
 	win.setString("You Win!");
 	win.setCharacterSize(40);
 	win.setPosition(max_x / 2 - 82, max_y / 2 - 30);
+    RectangleShape winFace;
+	winFace.setSize(Vector2f(30, 30));
+	winFace.setPosition(max_x / 2 - 10, max_y / 17 - 6);
+	Texture smiley_cool;
+	smiley_cool.loadFromFile("Images\\smiley_cool.png");
+    winFace.setTexture(&smiley_cool);
 
     window.draw(win);
+    window.draw(winFace);
     isGamePaused = true;
 }
 
@@ -230,6 +237,12 @@ void Game::Lose(RenderWindow& window) {
 	lose.setString("You Lose!");
 	lose.setCharacterSize(40);
 	lose.setPosition(max_x / 2 - 82, max_y / 2 - 30);
+    RectangleShape loseFace;
+	loseFace.setSize(Vector2f(30, 30));
+	loseFace.setPosition(max_x / 2 - 10, max_y / 17 - 6);
+	Texture smiley_rip;
+	smiley_rip.loadFromFile("Images\\smiley_rip.png");
+    loseFace.setTexture(&smiley_rip);
 
     for(int id = 0; id < numOfCells; ++id) {
         if (Flags[id] == true) {
@@ -243,7 +256,7 @@ void Game::Lose(RenderWindow& window) {
         }
         window.draw(cellDraw[id].GetRectangleShape());
     }
-
+    window.draw(loseFace);
     window.draw(lose);
     isGamePaused = true;
 }
