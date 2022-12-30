@@ -72,14 +72,14 @@ void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell, ve
             if (stateOfCells[id] == Checked) continue;
             ++cnt;
             if (stateOfCells[id] == Unchecked) {
-                cellDraw[id].SetTexture("Images\\Flag.png");
+                cellDraw[id].SetTexture("src\\Images\\Flag.png");
 //                cout << "Flag" << '\n';
                 stateOfCells[id] = flagPlaced;
                 ++numOfFlags;
                 Flags[id] = true;
             } else {
 //                cout << "UnFlag" << '\n';
-                cellDraw[id].SetTexture("Images\\UnCheckedCell.png");
+                cellDraw[id].SetTexture("src\\Images\\UnCheckedCell.png");
                 stateOfCells[id] = Unchecked;
                 --numOfFlags;
                 Flags[id] = false;
@@ -90,7 +90,7 @@ void Manipulation::RightClickOnCell(RenderWindow& window, vector<Cell>& cell, ve
 }
 void Manipulation::SaveData() {
     fstream file;
-    file.open("Save\\Manipulation.txt");
+    file.open("src\\Save\\Manipulation.txt");
     for(int id = 0; id < numOfCells; ++id) {
         file << stateOfCells[id] << ' ';
     }
@@ -98,7 +98,7 @@ void Manipulation::SaveData() {
 }
 void Manipulation::LoadData() {
     fstream file;
-    file.open("Save\\Manipulation.txt");
+    file.open("src\\Save\\Manipulation.txt");
     for(int id = 0; id < numOfCells; ++id) {
         file >> stateOfCells[id];
     }

@@ -84,21 +84,22 @@
 			<Add library="sfml-system" />
 			<Add directory="C:/Users/MSI 203VN/.vscode/SFML-2.5.1/lib" />
 		</Linker>
-		<Unit filename="Cell/Cell.cpp" />
-		<Unit filename="Cell/Cell.h" />
-		<Unit filename="Field/Field.cpp" />
-		<Unit filename="Field/Field.h" />
-		<Unit filename="Game/Button.cpp" />
-		<Unit filename="Game/Game.cpp" />
-		<Unit filename="Game/Game.h" />
-		<Unit filename="Game/Setting.cpp" />
-		<Unit filename="InputBar/InpuBar.h" />
-		<Unit filename="InputBar/InputBar.cpp" />
-		<Unit filename="Manipulation/Manipulation.cpp" />
-		<Unit filename="Manipulation/Manipulation.h" />
-		<Unit filename="Stats/Stats.cpp" />
-		<Unit filename="Stats/Stats.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="src/Cell/Cell.cpp" />
+		<Unit filename="src/Cell/Cell.h" />
+		<Unit filename="src/Field/Field.cpp" />
+		<Unit filename="src/Field/Field.h" />
+		<Unit filename="src/Fonts/arial.ttf" />
+		<Unit filename="src/Game/Button.cpp" />
+		<Unit filename="src/Game/Game.cpp" />
+		<Unit filename="src/Game/Game.h" />
+		<Unit filename="src/Game/Setting.cpp" />
+		<Unit filename="src/InputBar/InpuBar.h" />
+		<Unit filename="src/InputBar/InputBar.cpp" />
+		<Unit filename="src/Manipulation/Manipulation.cpp" />
+		<Unit filename="src/Manipulation/Manipulation.h" />
+		<Unit filename="src/Stats/Stats.cpp" />
+		<Unit filename="src/Stats/Stats.h" />
+		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

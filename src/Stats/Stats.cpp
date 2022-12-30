@@ -70,13 +70,13 @@ bool Stats::isClickedOnSave(Window& window) {
 }
 void Stats::SaveData() {
     fstream file;
-    file.open("Save\\Stats.txt");
+    file.open("src\\Save\\Stats.txt");
     file << minutes << ' ' << seconds;
     file.close();
 }
 void Stats::LoadData() {
     fstream file;
-    file.open("Save\\Stats.txt");
+    file.open("src\\Save\\Stats.txt");
     file >> minutes >> seconds;
     file.close();
 }

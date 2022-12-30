@@ -22,16 +22,16 @@ public:
         saveButtonX = 0;
         saveButtonY = 0;
 
-        font.loadFromFile("Fonts\\arial.ttf");
+        font.loadFromFile("src\\Fonts\\arial.ttf");
 
         minesCounter.setSize(Vector2f(2 * sz, sz));
         minesCounter.setFillColor(Color::Black);
 
-        textureStartButton.loadFromFile("Images\\StartButton.png");
+        textureStartButton.loadFromFile("src\\Images\\StartButton.png");
         startButton.setSize(Vector2f(sz, sz));
         startButton.setTexture(&textureStartButton);
 
-        textureSaveButton.loadFromFile("Images\\Save.png");
+        textureSaveButton.loadFromFile("src\\Images\\Save.png");
         saveButton.setSize(Vector2f(sz, sz));
         saveButton.setTexture(&textureSaveButton);
 

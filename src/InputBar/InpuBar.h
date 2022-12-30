@@ -17,7 +17,7 @@ public:
         szX = sX, szY = sY;
         coordX = cX, coordY = cY;
         input = startingInput = in;
-        font.loadFromFile("Fonts\\arial.ttf");
+        font.loadFromFile("src\\Fonts\\arial.ttf");
 
         inputShape.setFillColor(Color::White);
         inputShape.setSize(Vector2f(szX, szY));

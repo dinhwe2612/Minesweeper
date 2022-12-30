@@ -64,39 +64,39 @@ int Game::CountSurroundedMines(int id) {
     return cnt;
 }
 void Game::SetImage(int id) {
-    cellDraw[id].SetTexture("Images\\UnCheckedCell.png");
+    cellDraw[id].SetTexture("src\\Images\\UnCheckedCell.png");
     if (cell[id].IsMine()) {
-        cell[id].SetTexture("Images\\Mine.png");
+        cell[id].SetTexture("src\\Images\\Mine.png");
         return;
     }
     switch(CountSurroundedMines(id)) {
         case 0:
-            cell[id].SetTexture("Images\\EmptyCell.png");
+            cell[id].SetTexture("src\\Images\\EmptyCell.png");
             cell[id].isEmpty = true;
             break;
         case 1:
-            cell[id].SetTexture("Images\\One.png");
+            cell[id].SetTexture("src\\Images\\One.png");
             break;
         case 2:
-            cell[id].SetTexture("Images\\Two.png");
+            cell[id].SetTexture("src\\Images\\Two.png");
             break;
         case 3:
-            cell[id].SetTexture("Images\\Three.png");
+            cell[id].SetTexture("src\\Images\\Three.png");
             break;
         case 4:
-            cell[id].SetTexture("Images\\Four.png");
+            cell[id].SetTexture("src\\Images\\Four.png");
             break;
         case 5:
-            cell[id].SetTexture("Images\\Five.png");
+            cell[id].SetTexture("src\\Images\\Five.png");
             break;
         case 6:
-            cell[id].SetTexture("Images\\Six.png");
+            cell[id].SetTexture("src\\Images\\Six.png");
             break;
         case 7:
-            cell[id].SetTexture("Images\\Seven.png");
+            cell[id].SetTexture("src\\Images\\Seven.png");
             break;
         case 8:
-            cell[id].SetTexture("Images\\Eighth.png");
+            cell[id].SetTexture("src\\Images\\Eighth.png");
             break;
     }
 }
@@ -210,7 +210,7 @@ void Game::CreateGameWindow() {
 void Game::Win(RenderWindow& window) {
     Font font;
 	Text win;
-	font.loadFromFile("Fonts\\arial.ttf");
+	font.loadFromFile("src\\Fonts\\arial.ttf");
 	win.setFont(font);
 	win.setFillColor(Color::Green);
 	win.setString("You Win!");
@@ -220,7 +220,7 @@ void Game::Win(RenderWindow& window) {
 	winFace.setSize(Vector2f(30, 30));
 	winFace.setPosition(max_x / 2 - 10, max_y / 17 - 6);
 	Texture smiley_cool;
-	smiley_cool.loadFromFile("Images\\smiley_cool.png");
+	smiley_cool.loadFromFile("src\\Images\\smiley_cool.png");
     winFace.setTexture(&smiley_cool);
 
     window.draw(win);
@@ -231,7 +231,7 @@ void Game::Win(RenderWindow& window) {
 void Game::Lose(RenderWindow& window) {
     Font font;
     Text lose;
-	font.loadFromFile("Fonts\\arial.ttf");
+	font.loadFromFile("src\\Fonts\\arial.ttf");
 	lose.setFont(font);
 	lose.setFillColor(Color::Red);
 	lose.setString("You Lose!");
@@ -241,18 +241,18 @@ void Game::Lose(RenderWindow& window) {
 	loseFace.setSize(Vector2f(30, 30));
 	loseFace.setPosition(max_x / 2 - 10, max_y / 17 - 6);
 	Texture smiley_rip;
-	smiley_rip.loadFromFile("Images\\smiley_rip.png");
+	smiley_rip.loadFromFile("src\\Images\\smiley_rip.png");
     loseFace.setTexture(&smiley_rip);
 
     for(int id = 0; id < numOfCells; ++id) {
         if (Flags[id] == true) {
             if (cell[id].IsMine() == true) {
-                cellDraw[id].SetTexture("Images\\Mine.png");
+                cellDraw[id].SetTexture("src\\Images\\Mine.png");
             } else {
-                cellDraw[id].SetTexture("Images\\NotAMine.png");
+                cellDraw[id].SetTexture("src\\Images\\NotAMine.png");
             }
         } else if (cell[id].IsMine() == true) {
-            cellDraw[id].SetTexture("Images\\ExplodedMine.png");
+            cellDraw[id].SetTexture("src\\Images\\ExplodedMine.png");
         }
         window.draw(cellDraw[id].GetRectangleShape());
     }
@@ -263,7 +263,7 @@ void Game::Lose(RenderWindow& window) {
 
 void Game::SaveData() {
     fstream file;
-    file.open("Save\\Game.txt");
+    file.open("src\\Save\\Game.txt");
 
     file << level << '\n';
     file << numOfCells << ' ' << numOfMines << ' ' << sqrtNumOfCells << ' ' << Nrow << ' ' << Ncol << '\n';
@@ -275,7 +275,7 @@ void Game::SaveData() {
 }
 void Game::LoadData() {
     fstream file;
-    file.open("Save\\Game.txt");
+    file.open("src\\Save\\Game.txt");
 
     file >> level;
     file >> numOfCells >> numOfMines >> sqrtNumOfCells >> Nrow >> Ncol;
@@ -288,14 +288,14 @@ void Game::LoadData() {
     }
     file.close();
 
-    file.open("Save\\Manipulation.txt");
+    file.open("src\\Save\\Manipulation.txt");
     for(int id = 0, i = 0, j = 0; id < numOfCells; ++id) {
         SetImage(id);
 
         int st; file >> st;
-        if (st == 0) cellDraw[id].SetTexture("Images\\UnCheckedCell.png");
+        if (st == 0) cellDraw[id].SetTexture("src\\Images\\UnCheckedCell.png");
         else if (st == 1) cellDraw[id] = cell[id];
-        else cellDraw[id].SetTexture("Images\\Flag.png"), Flags[id] = true;
+        else cellDraw[id].SetTexture("src\\Images\\Flag.png"), Flags[id] = true;
 
         cellDraw[id].SetPosition(i * cellDraw[id].sz + sqrtNumOfCells * 0.5f, j * cellDraw[id].sz + sqrtNumOfCells * 5.7f);
         cell[id].SetPosition(i * cell[id].sz + sqrtNumOfCells * 0.5f, j * cell[id].sz + sqrtNumOfCells * 5.7f);
@@ -310,9 +310,9 @@ void Game::LoadData() {
 void Game::updateLeaderBoard(pair<int, float> time) {
     if (level == 0) return;
     fstream file;
-    if (level == 1) file.open("Save\\Beginner.txt");
-    else if (level == 2) file.open("Save\\Intermediate.txt");
-    else file.open("Save\\Expert.txt");
+    if (level == 1) file.open("src\\Save\\Beginner.txt");
+    else if (level == 2) file.open("src\\Save\\Intermediate.txt");
+    else file.open("src\\Save\\Expert.txt");
     int numOfscores = 0;
     file >> numOfscores;
     vector<pair<int, float>> Scores = {time};
@@ -322,9 +322,9 @@ void Game::updateLeaderBoard(pair<int, float> time) {
         Scores.push_back({minu, sec});
     }
     file.close();
-    if (level == 1) file.open("Save\\Beginner.txt");
-    else if (level == 2) file.open("Save\\Intermediate.txt");
-    else file.open("Save\\Expert.txt");
+    if (level == 1) file.open("src\\Save\\Beginner.txt");
+    else if (level == 2) file.open("src\\Save\\Intermediate.txt");
+    else file.open("src\\Save\\Expert.txt");
     sort(Scores.begin(), Scores.end());
     file << Scores.size() << '\n';
     for(auto i : Scores) {

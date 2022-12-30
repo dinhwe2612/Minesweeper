@@ -19,10 +19,10 @@ private:
     void bfs(RenderWindow& window, int id, vector<Cell>& cell, vector<Cell>& cellDraw, int& numCheckedCell);
 public:
     Manipulation() {
-        FlagCell.loadFromFile("Images\\Flag.png");
-        UnCheckedCell.loadFromFile("Images\\UnCheckedCell.png");
-        MineExplodedCell.loadFromFile("Images\\ExplodedMine.png");
-        NotAMineCell.loadFromFile("Images\\NotAMine.png");
+        FlagCell.loadFromFile("src\\Images\\Flag.png");
+        UnCheckedCell.loadFromFile("src\\Images\\UnCheckedCell.png");
+        MineExplodedCell.loadFromFile("src\\Images\\ExplodedMine.png");
+        NotAMineCell.loadFromFile("src\\Images\\NotAMine.png");
     }
     void init(int num, int Nr, int Nc) {
         numOfCells = num;

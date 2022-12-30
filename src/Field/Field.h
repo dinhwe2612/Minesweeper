@@ -10,7 +10,7 @@ private:
     Texture texture;
 public:
     Field(float x, float y) {
-        texture.loadFromFile("Images\\MinesweeperField.png");
+        texture.loadFromFile("src\\Images\\MinesweeperField.png");
         shape.setSize(Vector2f(x, y));
         shape.setPosition(0, 0);
         shape.setTexture(&texture);

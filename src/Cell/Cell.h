@@ -15,7 +15,7 @@ private:
 public:
     Cell() {
         sz = 30;
-        texture.loadFromFile("Images\\UnCheckedCell.png");
+        texture.loadFromFile("src\\Images\\UnCheckedCell.png");
         shape.setTexture(&texture);
         shape.setSize(Vector2f(sz, sz));
         isMine = false;

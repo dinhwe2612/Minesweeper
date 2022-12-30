@@ -10,7 +10,7 @@ void Game::CreateLevelWindow() {
     InputBar minesNumber(120, 30, 183.f, 317.f, "Mines = ");
 
     Font font;
-    font.loadFromFile("Fonts\\arial.ttf");
+    font.loadFromFile("src\\Fonts\\arial.ttf");
     Text TextBeginner;
     TextBeginner.setFont(font);
     TextBeginner.setFillColor(Color::Green);
@@ -73,7 +73,7 @@ void Game::CreateLevelWindow() {
 void PrintScores(RenderWindow& window, int x, string s) {
     Font font;
     Text text;
-    font.loadFromFile("Fonts\\arial.ttf");
+    font.loadFromFile("src\\Fonts\\arial.ttf");
     text.setFont(font);
     fstream file;
     text.setFillColor(Color::Green);
@@ -81,7 +81,7 @@ void PrintScores(RenderWindow& window, int x, string s) {
     text.setCharacterSize(30);
     text.setPosition(x, 0);
     window.draw(text);
-    file.open("Save\\" + s + ".txt");
+    file.open("src\\Save\\" + s + ".txt");
     int numOfScores = 0;
     file >> numOfScores;
     text.setCharacterSize(20);
@@ -124,7 +124,7 @@ void Game::CreateSettingsWindow() {
 
     Font font;
     Text start;
-    font.loadFromFile("Fonts\\arial.ttf");
+    font.loadFromFile("src\\Fonts\\arial.ttf");
     start.setFont(font);
     start.setFillColor(Color::White);
     start.setString("Start");
